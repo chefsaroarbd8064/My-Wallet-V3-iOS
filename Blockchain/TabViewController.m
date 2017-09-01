@@ -143,6 +143,13 @@
             [topBar changeHeight:TAB_HEADER_HEIGHT_DEFAULT - TAB_HEADER_HEIGHT_SMALL_OFFSET];
         }];
     } else if (newIndex == TAB_DASHBOARD || newIndex == TAB_TRANSACTIONS) {
+        
+        if (newIndex == TAB_DASHBOARD) {
+            [self showPrices];
+        } else if (newIndex == TAB_TRANSACTIONS) {
+            [self showSelector];
+        }
+        
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             [self.assetControlContainer changeYPosition:ASSET_CONTAINER_Y_POSITION_DEFAULT];
             [topBar changeHeight:TAB_HEADER_HEIGHT_DEFAULT];
@@ -196,6 +203,49 @@
 {
     AssetType asset = self.assetSegmentedControl.selectedSegmentIndex;
     [self.assetDelegate didSetAssetType:asset];
+}
+
+- (void)showPrices
+{
+    if (!self.bannerPricesView) {
+        
+        CGFloat bannerViewHeight = bannerView.frame.size.height;
+        
+        self.bannerPricesView = [[UIView alloc] initWithFrame:bannerView.bounds];
+        
+        UIImageView *btcIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerViewHeight, bannerViewHeight)];
+        [self.bannerPricesView addSubview:btcIcon];
+        
+        CGFloat btcPriceLabelOriginX = btcIcon.frame.origin.x + bannerViewHeight + 8;
+        UILabel *btcPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(btcPriceLabelOriginX, 0, bannerView.bounds.size.width/2 - btcPriceLabelOriginX, bannerViewHeight)];
+        btcPriceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
+        btcPriceLabel.textColor = [UIColor whiteColor];
+        btcPriceLabel.text = @"BTC price";
+        [self.bannerPricesView addSubview:btcPriceLabel];
+        
+        UIImageView *etherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(bannerView.bounds.size.width/2, 0, bannerViewHeight, bannerViewHeight)];
+        [self.bannerPricesView addSubview:etherIcon];
+        
+        CGFloat ethPriceLabelOriginX = etherIcon.frame.origin.x + etherIcon.frame.size.width;
+        UILabel *ethPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ethPriceLabelOriginX + 8, 0, bannerView.frame.size.width - ethPriceLabelOriginX, bannerViewHeight)];
+        ethPriceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
+        ethPriceLabel.textColor = [UIColor whiteColor];
+        ethPriceLabel.text = @"ETH price";
+        [self.bannerPricesView addSubview:ethPriceLabel];
+    }
+    
+    [bannerView addSubview:self.bannerPricesView];
+    [self.bannerSelectorView removeFromSuperview];
+}
+
+- (void)showSelector
+{
+    if (!self.bannerSelectorView) {
+        self.bannerSelectorView = [[UIView alloc] initWithFrame:bannerView.bounds];
+    }
+    
+    [bannerView addSubview:self.bannerSelectorView];
+    [self.bannerPricesView removeFromSuperview];
 }
 
 @end

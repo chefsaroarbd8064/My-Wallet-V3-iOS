@@ -19,6 +19,7 @@
     IBOutlet UITabBar *tabBar;
     IBOutlet UIView *topBar;
 	
+    IBOutlet UIView *bannerView;
     IBOutlet UILabel *titleLabel;
 	UIViewController *activeViewController;
 	UIViewController *oldViewController;
@@ -33,6 +34,8 @@
 @property (strong, nonatomic) IBOutlet UIView *assetControlContainer;
 @property(nonatomic, retain) UIView *menuSwipeRecognizerView;
 @property(nonatomic) UIView *tabBarGestureView;
+@property (nonatomic) UIView *bannerPricesView;
+@property (nonatomic) UIView *bannerSelectorView;
 @property(weak, nonatomic) id <AssetDelegate> assetDelegate;
 - (void)setActiveViewController:(UIViewController *)nviewcontroller animated:(BOOL)animated index:(int)index;
 - (void)addTapGestureRecognizerToTabBar:(UITapGestureRecognizer *)tapGestureRecognizer;
