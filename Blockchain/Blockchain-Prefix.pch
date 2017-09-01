@@ -14,7 +14,7 @@
     #import "LocalizationConstants.h"
 #endif
 
-// #define ENABLE_DEBUG_MENU 1
+ #define ENABLE_DEBUG_MENU 1
 
 #define ENABLE_TRANSFER_FUNDS 1
 #define ENABLE_TRANSACTION_FILTERING 1
@@ -365,12 +365,12 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
 #define DEV_API_URL PRODUCTION_API_URL
 #define DEV_BUY_WEBVIEW_URL PRODUCTION_BUY_WEBVIEW_URL
 
-#define STAGING_WALLET_SERVER PRODUCTION_WALLET_SERVER
-#define STAGING_WEBSOCKET_SERVER PRODUCTION_WEBSOCKET_SERVER
-#define STAGING_WEBSOCKET_SERVER_ETH PRODUCTION_WEBSOCKET_SERVER_ETH
-#define STAGING_MERCHANT_URL PRODUCTION_MERCHANT_URL
-#define STAGING_API_URL PRODUCTION_API_URL
-#define STAGING_BUY_WEBVIEW_URL PRODUCTION_BUY_WEBVIEW_URL
+#define STAGING_WALLET_SERVER @"https://explorer.staging.blockchain.info"
+#define STAGING_WEBSOCKET_SERVER @"wss://ws.staging.blockchain.info/inv"
+#define STAGING_WEBSOCKET_SERVER_ETH @"wss://ws.staging.blockchain.info/eth/inv"
+#define STAGING_MERCHANT_URL @"https://api.staging.blockchain.info/merchant"
+#define STAGING_API_URL @"https://api.staging.blockchain.info"
+#define STAGING_BUY_WEBVIEW_URL @"https://explorer.staging.blockchain.info/wallet/#/intermediate"
 
 #define TESTNET_WALLET_SERVER PRODUCTION_WALLET_SERVER
 #define TESTNET_WEBSOCKET_SERVER PRODUCTION_WEBSOCKET_SERVER
