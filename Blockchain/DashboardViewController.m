@@ -8,6 +8,7 @@
 
 #import "DashboardViewController.h"
 #import "SessionManager.h"
+#import "BCPriceGraphView.h"
 
 @interface CardsViewController ()
 @property (nonatomic) UIScrollView *scrollView;
@@ -15,7 +16,7 @@
 @end
 
 @interface DashboardViewController ()
-
+@property (nonatomic) BCPriceGraphView *graphView;
 @end
 
 @implementation DashboardViewController
@@ -25,9 +26,9 @@
     [super viewDidLoad];
     
     // This contentView can be any custom view - intended to be placed at the top of the scroll view, moved down when the cards view is present, and moved back up when the cards view is dismissed
-    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 320)];
-    self.contentView.backgroundColor = [UIColor purpleColor];
-    [self.scrollView addSubview:self.contentView];
+    self.graphView = [[BCPriceGraphView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 320)];
+    self.graphView.backgroundColor = [UIColor grayColor];
+    [self.scrollView addSubview:self.graphView];
 }
 
 - (void)reload
@@ -43,7 +44,11 @@
         } else {
             NSError *jsonError;
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
-            // DLog(@"%@", jsonResponse);
+             DLog(@"%@", jsonResponse);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.graphView setGraphValues:[jsonResponse objectForKey:DICTIONARY_KEY_VALUES]];
+            });
         }
     }];
     
