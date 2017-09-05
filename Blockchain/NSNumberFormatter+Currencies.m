@@ -128,7 +128,7 @@
 {
     if (ethAmount != nil && [ethAmount doubleValue] > 0) {
         NSDecimalNumber *ethAmountDecimalNumber = [NSDecimalNumber decimalNumberWithString:ethAmount];
-        return [NSString stringWithFormat:@"%@", [NSNumberFormatter convertEthToFiat:ethAmountDecimalNumber exchangeRate:exchangeRate]];
+        return [app.localCurrencyFormatter stringFromNumber:[NSNumberFormatter convertEthToFiat:ethAmountDecimalNumber exchangeRate:exchangeRate]];
     } else {
         return nil;
     }
