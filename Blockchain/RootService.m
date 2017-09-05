@@ -1021,9 +1021,6 @@ void (^secondPasswordSuccess)(NSString *);
 
 - (void)didGetMultiAddressResponse:(MultiAddressResponse*)response
 {
-    CurrencySymbol *localSymbol = self.latestResponse.symbol_local;
-    CurrencySymbol *btcSymbol = self.latestResponse.symbol_btc;
-    
     self.latestResponse = response;
     
     [self.tabControllerManager updateTransactionsViewControllerData:response];
@@ -1038,8 +1035,6 @@ void (^secondPasswordSuccess)(NSString *);
 #else
     if (app.wallet.isFilteringTransactions) {
         app.wallet.isFilteringTransactions = NO;
-        self.latestResponse.symbol_local = localSymbol;
-        self.latestResponse.symbol_btc = btcSymbol;
         [self reloadAfterMultiAddressResponse];
     } else {
         [self getAccountInfo];
@@ -1105,7 +1100,7 @@ void (^secondPasswordSuccess)(NSString *);
         }
     }
     
-    [self reloadAfterMultiAddressResponse];
+    [self.wallet getEthExchangeRate];
 }
 
 - (void)walletFailedToDecrypt
@@ -2433,6 +2428,8 @@ void (^secondPasswordSuccess)(NSString *);
 
 - (void)didFetchEthExchangeRate:(NSNumber *)rate
 {
+    [self reloadAfterMultiAddressResponse];
+    
     [self.tabControllerManager didFetchEthExchangeRate:rate];
 }
 

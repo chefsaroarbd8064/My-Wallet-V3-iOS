@@ -205,34 +205,44 @@
     [self.assetDelegate didSetAssetType:asset];
 }
 
+- (void)didFetchEthExchangeRate
+{
+    [self updateTopBarForIndex:self.selectedIndex];
+}
+
 - (void)showPrices
 {
     if (!self.bannerPricesView) {
         
         CGFloat bannerViewHeight = bannerView.frame.size.height;
+        CGFloat imageViewWidth = bannerViewHeight - 8;
         
         self.bannerPricesView = [[UIView alloc] initWithFrame:bannerView.bounds];
         
-        UIImageView *btcIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerViewHeight, bannerViewHeight)];
+        UIImageView *btcIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageViewWidth, bannerViewHeight)];
         [self.bannerPricesView addSubview:btcIcon];
         
-        CGFloat btcPriceLabelOriginX = btcIcon.frame.origin.x + bannerViewHeight + 8;
+        CGFloat btcPriceLabelOriginX = btcIcon.frame.origin.x + btcIcon.frame.size.width + 8;
         UILabel *btcPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(btcPriceLabelOriginX, 0, bannerView.bounds.size.width/2 - btcPriceLabelOriginX, bannerViewHeight)];
-        btcPriceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
+        btcPriceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_SMALL];
         btcPriceLabel.textColor = [UIColor whiteColor];
-        btcPriceLabel.text = @"BTC price";
+        btcPriceLabel.text = CURRENCY_SYMBOL_BTC;
         [self.bannerPricesView addSubview:btcPriceLabel];
+        self.btcPriceLabel = btcPriceLabel;
         
-        UIImageView *etherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(bannerView.bounds.size.width/2, 0, bannerViewHeight, bannerViewHeight)];
+        UIImageView *etherIcon = [[UIImageView alloc] initWithFrame:CGRectMake(bannerView.bounds.size.width/2, 0, imageViewWidth, bannerViewHeight)];
         [self.bannerPricesView addSubview:etherIcon];
         
         CGFloat ethPriceLabelOriginX = etherIcon.frame.origin.x + etherIcon.frame.size.width;
         UILabel *ethPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(ethPriceLabelOriginX + 8, 0, bannerView.frame.size.width - ethPriceLabelOriginX, bannerViewHeight)];
-        ethPriceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
+        ethPriceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_SMALL];
         ethPriceLabel.textColor = [UIColor whiteColor];
-        ethPriceLabel.text = @"ETH price";
         [self.bannerPricesView addSubview:ethPriceLabel];
+        self.ethPriceLabel = ethPriceLabel;
     }
+    
+    self.ethPriceLabel.text = [NSString stringWithFormat:@"%@ %@", [app.wallet getEthBalanceTruncated], CURRENCY_SYMBOL_ETH];
+    self.btcPriceLabel.text = [NSNumberFormatter formatMoney:[app.wallet getTotalActiveBalance] localCurrency:NO];
     
     [bannerView addSubview:self.bannerPricesView];
     [self.bannerSelectorView removeFromSuperview];

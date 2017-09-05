@@ -418,6 +418,7 @@ typedef enum {
 
 // Ethereum
 - (NSString *)getEthBalance;
+- (NSString *)getEthBalanceTruncated;
 - (NSArray *)getEthTransactions;
 - (void)getEthHistory;
 - (void)getEthExchangeRate;

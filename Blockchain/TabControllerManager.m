@@ -233,6 +233,7 @@
 {
     self.latestEthExchangeRate = [NSDecimalNumber decimalNumberWithDecimal:[rate decimalValue]];
 
+    [self.tabViewController didFetchEthExchangeRate];
     [_sendEtherViewController updateExchangeRate:self.latestEthExchangeRate];
 }
 
@@ -268,6 +269,11 @@
 - (void)paymentReceived:(NSDecimalNumber *)amount showBackupReminder:(BOOL)showBackupReminder
 {
     [_receiveViewController paymentReceived:amount showBackupReminder:showBackupReminder];
+}
+
+- (NSDecimalNumber *)lastEthExchangeRate
+{
+    return self.latestEthExchangeRate;
 }
 
 #pragma mark - Transactions

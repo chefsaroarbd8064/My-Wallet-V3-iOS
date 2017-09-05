@@ -2515,6 +2515,17 @@
     }
 }
 
+- (NSString *)getEthBalanceTruncated
+{
+    if ([self isInitialized]) {
+        NSNumber *balanceNumber = [[self.context evaluateScript:@"MyWalletPhone.getEthBalance()"] toNumber];
+        return [app.btcFormatter stringFromNumber:balanceNumber];
+    } else {
+        DLog(@"Warning: getting eth balance when not initialized - returning 0");
+        return @"0";
+    }
+}
+
 - (void)getEthHistory
 {
     if ([self isInitialized]) {

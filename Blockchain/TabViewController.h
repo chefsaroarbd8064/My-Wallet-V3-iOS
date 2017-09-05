@@ -34,7 +34,11 @@
 @property (strong, nonatomic) IBOutlet UIView *assetControlContainer;
 @property(nonatomic, retain) UIView *menuSwipeRecognizerView;
 @property(nonatomic) UIView *tabBarGestureView;
+
 @property (nonatomic) UIView *bannerPricesView;
+@property (nonatomic) UILabel *ethPriceLabel;
+@property (nonatomic) UILabel *btcPriceLabel;
+
 @property (nonatomic) UIView *bannerSelectorView;
 @property(weak, nonatomic) id <AssetDelegate> assetDelegate;
 - (void)setActiveViewController:(UIViewController *)nviewcontroller animated:(BOOL)animated index:(int)index;
@@ -43,5 +47,6 @@
 - (int)selectedIndex;
 - (void)updateBadgeNumber:(NSInteger)number forSelectedIndex:(int)index;
 - (void)setTitleLabelText:(NSString *)text;
+- (void)didFetchEthExchangeRate;
 
 @end
