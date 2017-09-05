@@ -145,9 +145,15 @@
     } else if (newIndex == TAB_DASHBOARD || newIndex == TAB_TRANSACTIONS) {
         
         if (newIndex == TAB_DASHBOARD) {
-            [self showPrices];
+            [self showBalances];
         } else if (newIndex == TAB_TRANSACTIONS) {
-            [self showSelector];
+            [self.bannerPricesView removeFromSuperview];
+
+            if (self.assetSegmentedControl.selectedSegmentIndex == AssetTypeBitcoin) {
+                [self showSelector];
+            } else {
+                [self.bannerSelectorView removeFromSuperview];
+            }
         }
         
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
@@ -202,6 +208,7 @@
 - (void)assetSegmentedControlChanged
 {
     AssetType asset = self.assetSegmentedControl.selectedSegmentIndex;
+    
     [self.assetDelegate didSetAssetType:asset];
 }
 
@@ -210,7 +217,7 @@
     [self updateTopBarForIndex:self.selectedIndex];
 }
 
-- (void)showPrices
+- (void)showBalances
 {
     if (!self.bannerPricesView) {
         
@@ -239,12 +246,14 @@
         ethPriceLabel.textColor = [UIColor whiteColor];
         [self.bannerPricesView addSubview:ethPriceLabel];
         self.ethPriceLabel = ethPriceLabel;
+        
     }
     
+    [bannerView addSubview:self.bannerPricesView];
+
     self.ethPriceLabel.text = [NSString stringWithFormat:@"%@ %@", [app.wallet getEthBalanceTruncated], CURRENCY_SYMBOL_ETH];
     self.btcPriceLabel.text = [NSNumberFormatter formatMoney:[app.wallet getTotalActiveBalance] localCurrency:NO];
     
-    [bannerView addSubview:self.bannerPricesView];
     [self.bannerSelectorView removeFromSuperview];
 }
 
@@ -252,10 +261,34 @@
 {
     if (!self.bannerSelectorView) {
         self.bannerSelectorView = [[UIView alloc] initWithFrame:bannerView.bounds];
+        UIButton *selectorButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, bannerView.frame.size.width, bannerView.frame.size.height)];
+        selectorButton.titleLabel.textColor = [UIColor whiteColor];
+        selectorButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        selectorButton.contentEdgeInsets = UIEdgeInsetsZero;
+        selectorButton.titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_SMALL];
+        [selectorButton setTitle:BC_STRING_BITCOIN_BALANCES forState:UIControlStateNormal];
+        [selectorButton setImage:[[UIImage imageNamed:@"back_chevron_icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        selectorButton.imageView.transform = CGAffineTransformMakeScale(-1, 1);
+        selectorButton.tintColor = [UIColor whiteColor];
+        
+        UIButton *buttonForTitleWidth = [[UIButton alloc] initWithFrame:selectorButton.frame];
+        buttonForTitleWidth.titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_SMALL];
+        [buttonForTitleWidth setTitle:BC_STRING_BITCOIN_BALANCES forState:UIControlStateNormal];
+        [buttonForTitleWidth sizeToFit];
+        
+        selectorButton.imageEdgeInsets = UIEdgeInsetsMake(0, -selectorButton.imageView.bounds.size.width + selectorButton.frame.size.width/2 + buttonForTitleWidth.frame.size.width/2 + 20, 0, 0);
+        selectorButton.titleEdgeInsets = UIEdgeInsetsMake(0, -selectorButton.imageView.bounds.size.width, 0, 0);
+        [selectorButton addTarget:self action:@selector(selectorButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self.bannerSelectorView addSubview:selectorButton];
     }
     
     [bannerView addSubview:self.bannerSelectorView];
     [self.bannerPricesView removeFromSuperview];
+}
+
+- (void)selectorButtonClicked
+{
+    [self.assetDelegate selectorButtonClicked];
 }
 
 @end

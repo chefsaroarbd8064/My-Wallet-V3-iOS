@@ -360,6 +360,11 @@
     [_tabViewController setActiveViewController:_transactionsViewController animated:FALSE index:1];
 }
 
+- (void)selectorButtonClicked
+{
+    [_transactionsViewController showFilterMenu];
+}
+
 #pragma mark - Reloading
 
 - (void)reloadSymbols

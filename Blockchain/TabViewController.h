@@ -9,6 +9,7 @@
 
 @protocol AssetDelegate
 - (void)didSetAssetType:(AssetType)assetType;
+- (void)selectorButtonClicked;
 @end
 
 @interface TabViewcontroller : UIViewController <UITabBarDelegate> {
