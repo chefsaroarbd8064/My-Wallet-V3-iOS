@@ -24,6 +24,19 @@
 @property (nonatomic) UIButton *monthButton;
 @property (nonatomic) UIButton *weekButton;
 @property (nonatomic) NSString *lastEthExchangeRate;
+
+// X axis
+@property (nonatomic) UILabel *xAxisLabelFirst;
+@property (nonatomic) UILabel *xAxisLabelSecond;
+@property (nonatomic) UILabel *xAxisLabelThird;
+@property (nonatomic) UILabel *xAxisLabelFourth;
+
+// Y axis
+@property (nonatomic) UILabel *yAxisLabelFirst;
+@property (nonatomic) UILabel *yAxisLabelSecond;
+@property (nonatomic) UILabel *yAxisLabelThird;
+@property (nonatomic) UILabel *yAxisLabelFourth;
+
 @end
 
 @implementation DashboardViewController
@@ -96,7 +109,9 @@
 //             DLog(@"%@", jsonResponse);
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.graphView setGraphValues:[jsonResponse objectForKey:DICTIONARY_KEY_VALUES]];
+                NSArray *values = [jsonResponse objectForKey:DICTIONARY_KEY_VALUES];
+                [self.graphView setGraphValues:values];
+                [self updateAxisLabelsWithGraphValues:values];
             });
         }
     }];
@@ -136,6 +151,11 @@
     [labelContainerView addSubview:fourthLabel];
     
     [self.contentView addSubview:labelContainerView];
+    
+    self.xAxisLabelFirst = firstLabel;
+    self.xAxisLabelSecond = secondLabel;
+    self.xAxisLabelThird = thirdLabel;
+    self.xAxisLabelFourth = fourthLabel;
 }
 
 - (void)setupYAxis
@@ -164,6 +184,11 @@
     [labelContainerView addSubview:fourthLabel];
     
     [self.contentView addSubview:labelContainerView];
+    
+    self.yAxisLabelFirst = firstLabel;
+    self.yAxisLabelSecond = secondLabel;
+    self.yAxisLabelThird = thirdLabel;
+    self.yAxisLabelFourth = fourthLabel;
 }
 
 - (void)setupTimeSpanButtons
@@ -184,6 +209,38 @@
     
     [self.contentView addSubview:buttonContainerView];
     buttonContainerView.center = CGPointMake(self.contentView.center.x, buttonContainerView.center.y);
+}
+
+- (void)updateAxisLabelsWithGraphValues:(NSArray *)graphValues
+{
+    NSUInteger firstTimeIndex = roundf(graphValues.count / 8.0);
+    NSUInteger secondTimeIndex = roundf(graphValues.count / 2.0 - graphValues.count / 8.0);
+    NSUInteger thirdTimeIndex = roundf(graphValues.count / 2.0 + graphValues.count / 8.0);
+    NSUInteger fourthTimeIndex = roundf(graphValues.count * 7.0 / 8.0);
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"MMM dd";
+    self.xAxisLabelFirst.text = [self dateStringFromGraphValue:[graphValues objectAtIndex:firstTimeIndex]];
+    self.xAxisLabelSecond.text = [self dateStringFromGraphValue:[graphValues objectAtIndex:secondTimeIndex]];
+    self.xAxisLabelThird.text = [self dateStringFromGraphValue:[graphValues objectAtIndex:thirdTimeIndex]];
+    self.xAxisLabelFourth.text = [self dateStringFromGraphValue:[graphValues objectAtIndex:fourthTimeIndex]];
+    
+    CGFloat maxPrice = self.graphView.maxY;
+    CGFloat minPrice = self.graphView.minY;
+    
+    CGFloat median = (maxPrice + minPrice) / 2;
+    CGFloat firstQuarter = (median + minPrice) / 2;
+    CGFloat lastQuarter = (maxPrice + median) / 2;
+    
+    CGFloat firstPrice = (firstQuarter + minPrice) / 2;
+    CGFloat secondPrice = (median + firstQuarter) / 2;
+    CGFloat thirdPrice = (lastQuarter + median) / 2;
+    CGFloat fourthPrice = (maxPrice + lastQuarter) / 2;
+
+    self.yAxisLabelFirst.text = [NSString stringWithFormat:@"%.f", roundf(firstPrice)];
+    self.yAxisLabelSecond.text = [NSString stringWithFormat:@"%.f", roundf(secondPrice)];
+    self.yAxisLabelThird.text = [NSString stringWithFormat:@"%.f", roundf(thirdPrice)];
+    self.yAxisLabelFourth.text = [NSString stringWithFormat:@"%.f", roundf(fourthPrice)];
 }
 
 - (void)timeSpanButtonTapped:(UIButton *)button
@@ -224,6 +281,15 @@
     [button setAttributedTitle:attrSelected forState:UIControlStateSelected];
     [button addTarget:self action:@selector(timeSpanButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     return button;
+}
+
+#pragma mark - Text Helpers
+
+- (NSString *)dateStringFromGraphValue:(NSDictionary *)graphInfo
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"MMM dd";
+    return [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[graphInfo objectForKey:DICTIONARY_KEY_X] floatValue]]];
 }
 
 @end

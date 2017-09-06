@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface BCPriceGraphView : UIView
+@property (nonatomic) float maxY;
+@property (nonatomic) float minY;
 - (void)setGraphValues:(NSArray *)values;
 @end

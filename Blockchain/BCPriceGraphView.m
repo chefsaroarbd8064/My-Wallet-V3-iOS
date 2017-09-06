@@ -33,6 +33,10 @@
     
     CGFloat minY = [[[sortedYCoordinates firstObject] objectForKey:DICTIONARY_KEY_Y] floatValue];
     CGFloat maxY = [[[sortedYCoordinates lastObject] objectForKey:DICTIONARY_KEY_Y] floatValue];
+    
+    self.minY = minY;
+    self.maxY = maxY;
+    
     CGFloat priceHeight = maxY - minY;
     
     UIBezierPath *path = [UIBezierPath bezierPath];
