@@ -798,3 +798,4 @@
 #define BC_STRING_MONTH NSLocalizedString(@"Month", nil)
 #define BC_STRING_YEAR NSLocalizedString(@"Year", nil)
 
+#define BC_STRING_ETHER_PRICE NSLocalizedString(@"Ether Price", nil)

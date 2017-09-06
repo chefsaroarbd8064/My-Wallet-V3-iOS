@@ -34,6 +34,7 @@
     
     // This contentView can be any custom view - intended to be placed at the top of the scroll view, moved down when the cards view is present, and moved back up when the cards view is dismissed
     self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 320)];
+    self.contentView.clipsToBounds = YES;
     self.contentView.backgroundColor = [UIColor whiteColor];
     [self.scrollView addSubview:self.contentView];
     
@@ -44,7 +45,7 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     titleLabel.textColor = COLOR_BLOCKCHAIN_BLUE;
     titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_EXTRA_SMALL];
-    titleLabel.text = [@"Ether price" uppercaseString];
+    titleLabel.text = [BC_STRING_ETHER_PRICE uppercaseString];
     [titleLabel sizeToFit];
     titleLabel.center = CGPointMake(titleContainerView.frame.size.width/2, titleLabel.center.y);
     [titleContainerView addSubview:titleLabel];
@@ -59,6 +60,7 @@
     self.graphView = [[BCPriceGraphView alloc] initWithFrame:CGRectInset(self.contentView.bounds, 60, 60)];
     self.graphView.backgroundColor = [UIColor whiteColor];
     [self.graphView changeWidth:self.contentView.frame.size.width - self.graphView.frame.origin.x - 30];
+    [self.graphView changeHeight:self.contentView.frame.size.height - 150];
     [self.contentView addSubview:self.graphView];
     
     UIView *verticalBorder = [[UIView alloc] initWithFrame:CGRectMake(self.graphView.frame.origin.x - 1, self.graphView.frame.origin.y, 1, self.graphView.frame.size.height + 1)];
@@ -68,6 +70,8 @@
     UIView *horizontalBorder = [[UIView alloc] initWithFrame:CGRectMake(self.graphView.frame.origin.x, self.graphView.frame.origin.y + self.graphView.frame.size.height, self.graphView.frame.size.width, 1)];
     horizontalBorder.backgroundColor = COLOR_LIGHT_GRAY;
     [self.contentView addSubview:horizontalBorder];
+    
+    [self setupAxes];
     
     [self setupTimeSpanButtons];
 }
@@ -100,10 +104,49 @@
     [task resume];
 }
 
+- (void)setupAxes
+{
+    [self setupXAxis];
+    [self setupYAxis];
+}
+
+- (void)setupXAxis
+{
+    UIView *labelContainerView = [[UIView alloc] initWithFrame:CGRectMake(self.graphView.frame.origin.x, self.graphView.frame.origin.y + self.graphView.frame.size.height + 8, self.graphView.frame.size.width, 30)];
+    labelContainerView.backgroundColor = [UIColor clearColor];
+    
+    UILabel *firstLabel = [self axisLabelWithFrame:CGRectMake(0, 0, 60, labelContainerView.frame.size.height)];
+    firstLabel.text = @"test";
+    firstLabel.center = CGPointMake(labelContainerView.frame.size.width/8, labelContainerView.frame.size.height/2);
+    [labelContainerView addSubview:firstLabel];
+    
+    UILabel *secondLabel = [self axisLabelWithFrame:CGRectMake(0, 0, 60, labelContainerView.frame.size.height)];
+    secondLabel.text = @"test";
+    secondLabel.center = CGPointMake(labelContainerView.frame.size.width/2 - labelContainerView.frame.size.width/8, labelContainerView.frame.size.height/2);
+    [labelContainerView addSubview:secondLabel];
+    
+    UILabel *thirdLabel = [self axisLabelWithFrame:CGRectMake(0, 0, 60, labelContainerView.frame.size.height)];
+    thirdLabel.text = @"test";
+    thirdLabel.center = CGPointMake(labelContainerView.frame.size.width/2 + labelContainerView.frame.size.width/8, labelContainerView.frame.size.height/2);
+    [labelContainerView addSubview:thirdLabel];
+    
+    UILabel *fourthLabel = [self axisLabelWithFrame:CGRectMake(0, 0, 60, labelContainerView.frame.size.height)];
+    fourthLabel.text = @"test";
+    fourthLabel.center = CGPointMake(labelContainerView.frame.size.width*7/8, labelContainerView.frame.size.height/2);
+    [labelContainerView addSubview:fourthLabel];
+    
+    [self.contentView addSubview:labelContainerView];
+}
+
+- (void)setupYAxis
+{
+    
+}
+
 - (void)setupTimeSpanButtons
 {
     CGFloat buttonContainerViewWidth = 210;
-    UIView *buttonContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.graphView.frame.origin.y + self.graphView.frame.size.height + 16, buttonContainerViewWidth, 30)];
+    UIView *buttonContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.graphView.frame.origin.y + self.graphView.frame.size.height + 50, buttonContainerViewWidth, 30)];
     
     CGFloat buttonWidth = buttonContainerViewWidth/3;
     
@@ -137,13 +180,23 @@
 
 #pragma mark - View Helpers
 
+- (UILabel *)axisLabelWithFrame:(CGRect)frame
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
+    return label;
+}
+
 - (UIButton *)timeSpanButtonWithFrame:(CGRect)frame title:(NSString *)title
 {
-    NSAttributedString *attrNormal = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:COLOR_BLOCKCHAIN_BLUE, NSUnderlineStyleAttributeName:[NSNumber numberWithInt:NSUnderlineStyleNone]}];
-    NSAttributedString *attrSelected = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:COLOR_BLOCKCHAIN_BLUE, NSUnderlineStyleAttributeName:[NSNumber numberWithInt:NSUnderlineStyleSingle]}];
+    UIFont *normalFont = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_EXTRA_SMALL];
+    UIFont *selectedFont = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_EXTRA_SMALL];
+    
+    NSAttributedString *attrNormal = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName:normalFont, NSForegroundColorAttributeName:COLOR_BLOCKCHAIN_BLUE, NSUnderlineStyleAttributeName:[NSNumber numberWithInt:NSUnderlineStyleNone]}];
+    NSAttributedString *attrSelected = [[NSAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName:selectedFont, NSForegroundColorAttributeName:COLOR_BLOCKCHAIN_BLUE, NSUnderlineStyleAttributeName:[NSNumber numberWithInt:NSUnderlineStyleSingle]}];
     
     UIButton *button = [[UIButton alloc] initWithFrame:frame];
-    button.titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_EXTRA_SMALL];
     [button setAttributedTitle:attrNormal forState:UIControlStateNormal];
     [button setAttributedTitle:attrSelected forState:UIControlStateSelected];
     [button addTarget:self action:@selector(timeSpanButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
