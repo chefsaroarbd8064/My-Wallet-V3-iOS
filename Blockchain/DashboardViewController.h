@@ -11,4 +11,5 @@
 
 @interface DashboardViewController : CardsViewController
 - (void)reload;
+- (void)updateEthExchangeRate:(NSDecimalNumber *)rate;
 @end

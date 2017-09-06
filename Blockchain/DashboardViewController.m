@@ -10,6 +10,7 @@
 #import "SessionManager.h"
 #import "BCPriceGraphView.h"
 #import "UIView+ChangeFrameAttribute.h"
+#import "NSNumberFormatter+Currencies.h"
 
 @interface CardsViewController ()
 @property (nonatomic) UIScrollView *scrollView;
@@ -18,10 +19,11 @@
 
 @interface DashboardViewController ()
 @property (nonatomic) BCPriceGraphView *graphView;
-
+@property (nonatomic) UILabel *priceLabel;
 @property (nonatomic) UIButton *yearButton;
 @property (nonatomic) UIButton *monthButton;
 @property (nonatomic) UIButton *weekButton;
+@property (nonatomic) NSString *lastEthExchangeRate;
 @end
 
 @implementation DashboardViewController
@@ -34,6 +36,25 @@
     self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 320)];
     self.contentView.backgroundColor = [UIColor whiteColor];
     [self.scrollView addSubview:self.contentView];
+    
+    UIView *titleContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
+    titleContainerView.backgroundColor = [UIColor clearColor];
+    titleContainerView.center = CGPointMake(self.contentView.center.x, titleContainerView.center.y);
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    titleLabel.textColor = COLOR_BLOCKCHAIN_BLUE;
+    titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_EXTRA_SMALL];
+    titleLabel.text = [@"Ether price" uppercaseString];
+    [titleLabel sizeToFit];
+    titleLabel.center = CGPointMake(titleContainerView.frame.size.width/2, titleLabel.center.y);
+    [titleContainerView addSubview:titleLabel];
+    
+    self.priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, titleLabel.frame.origin.y + titleLabel.frame.size.height, 0, 0)];
+    self.priceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_EXTRA_LARGE];
+    self.priceLabel.textColor = COLOR_BLOCKCHAIN_BLUE;
+    [titleContainerView addSubview:self.priceLabel];
+    
+    [self.contentView addSubview:titleContainerView];
     
     self.graphView = [[BCPriceGraphView alloc] initWithFrame:CGRectInset(self.contentView.bounds, 60, 60)];
     self.graphView.backgroundColor = [UIColor whiteColor];
@@ -53,6 +74,10 @@
 
 - (void)reload
 {
+    self.priceLabel.text = self.lastEthExchangeRate;
+    [self.priceLabel sizeToFit];
+    self.priceLabel.center = CGPointMake(self.contentView.center.x, self.priceLabel.center.y);
+    
     [self reloadCards];
     
     NSURL *URL = [NSURL URLWithString:[URL_SERVER stringByAppendingString:CHARTS_URL_SUFFIX]];
@@ -64,7 +89,7 @@
         } else {
             NSError *jsonError;
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
-             DLog(@"%@", jsonResponse);
+//             DLog(@"%@", jsonResponse);
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.graphView setGraphValues:[jsonResponse objectForKey:DICTIONARY_KEY_VALUES]];
@@ -102,6 +127,12 @@
     [self.yearButton setSelected:NO];
 
     [button setSelected:YES];
+}
+
+- (void)updateEthExchangeRate:(NSDecimalNumber *)rate
+{
+    self.lastEthExchangeRate = [NSNumberFormatter formatEthToFiatWithSymbol:@"1" exchangeRate:rate];
+    [self reload];
 }
 
 #pragma mark - View Helpers
