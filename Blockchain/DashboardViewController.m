@@ -40,6 +40,14 @@
     [self.graphView changeWidth:self.contentView.frame.size.width - self.graphView.frame.origin.x - 30];
     [self.contentView addSubview:self.graphView];
     
+    UIView *verticalBorder = [[UIView alloc] initWithFrame:CGRectMake(self.graphView.frame.origin.x - 1, self.graphView.frame.origin.y, 1, self.graphView.frame.size.height + 1)];
+    verticalBorder.backgroundColor = COLOR_LIGHT_GRAY;
+    [self.contentView addSubview:verticalBorder];
+    
+    UIView *horizontalBorder = [[UIView alloc] initWithFrame:CGRectMake(self.graphView.frame.origin.x, self.graphView.frame.origin.y + self.graphView.frame.size.height, self.graphView.frame.size.width, 1)];
+    horizontalBorder.backgroundColor = COLOR_LIGHT_GRAY;
+    [self.contentView addSubview:horizontalBorder];
+    
     [self setupTimeSpanButtons];
 }
 
