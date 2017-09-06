@@ -60,7 +60,7 @@
         [self removeCardsView];
     }
     
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.cardsViewHeight + self.contentView.frame.size.height);
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height + (self.showBuyAvailableNow || self.showCards ? self.cardsViewHeight : 0));
 }
 
 - (void)setupCardsViewWithConfiguration:(CardConfiguration)configuration
