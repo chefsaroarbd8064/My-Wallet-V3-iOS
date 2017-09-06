@@ -9,6 +9,7 @@
 #import "DashboardViewController.h"
 #import "SessionManager.h"
 #import "BCPriceGraphView.h"
+#import "UIView+ChangeFrameAttribute.h"
 
 @interface CardsViewController ()
 @property (nonatomic) UIScrollView *scrollView;
@@ -17,6 +18,10 @@
 
 @interface DashboardViewController ()
 @property (nonatomic) BCPriceGraphView *graphView;
+
+@property (nonatomic) UIButton *yearButton;
+@property (nonatomic) UIButton *monthButton;
+@property (nonatomic) UIButton *weekButton;
 @end
 
 @implementation DashboardViewController
@@ -26,9 +31,16 @@
     [super viewDidLoad];
     
     // This contentView can be any custom view - intended to be placed at the top of the scroll view, moved down when the cards view is present, and moved back up when the cards view is dismissed
-    self.graphView = [[BCPriceGraphView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 320)];
-    self.graphView.backgroundColor = [UIColor grayColor];
-    [self.scrollView addSubview:self.graphView];
+    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 320)];
+    self.contentView.backgroundColor = [UIColor whiteColor];
+    [self.scrollView addSubview:self.contentView];
+    
+    self.graphView = [[BCPriceGraphView alloc] initWithFrame:CGRectInset(self.contentView.bounds, 60, 60)];
+    self.graphView.backgroundColor = [UIColor whiteColor];
+    [self.graphView changeWidth:self.contentView.frame.size.width - self.graphView.frame.origin.x - 30];
+    [self.contentView addSubview:self.graphView];
+    
+    [self setupTimeSpanButtons];
 }
 
 - (void)reload
@@ -53,6 +65,50 @@
     }];
     
     [task resume];
+}
+
+- (void)setupTimeSpanButtons
+{
+    CGFloat buttonContainerViewWidth = 210;
+    UIView *buttonContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.graphView.frame.origin.y + self.graphView.frame.size.height + 16, buttonContainerViewWidth, 30)];
+    
+    CGFloat buttonWidth = buttonContainerViewWidth/3;
+    
+    self.weekButton = [self timeSpanButtonWithFrame:CGRectMake(0, 0, buttonWidth, 30) title:BC_STRING_WEEK];
+    [buttonContainerView addSubview:self.weekButton];
+    
+    self.monthButton = [self timeSpanButtonWithFrame:CGRectMake(self.weekButton.frame.origin.x + buttonWidth, 0, buttonWidth, 30) title:BC_STRING_MONTH];
+    [buttonContainerView addSubview:self.monthButton];
+    
+    self.yearButton = [self timeSpanButtonWithFrame:CGRectMake(self.monthButton.frame.origin.x + buttonWidth, 0, buttonWidth, 30) title:BC_STRING_YEAR];
+    [buttonContainerView addSubview:self.yearButton];
+    
+    [self.contentView addSubview:buttonContainerView];
+    buttonContainerView.center = CGPointMake(self.contentView.center.x, buttonContainerView.center.y);
+}
+
+- (void)timeSpanButtonTapped:(UIButton *)button
+{
+    [self.weekButton setSelected:NO];
+    [self.monthButton setSelected:NO];
+    [self.yearButton setSelected:NO];
+
+    [button setSelected:YES];
+}
+
+#pragma mark - View Helpers
+
+- (UIButton *)timeSpanButtonWithFrame:(CGRect)frame title:(NSString *)title
+{
+    NSAttributedString *attrNormal = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:COLOR_BLOCKCHAIN_BLUE, NSUnderlineStyleAttributeName:[NSNumber numberWithInt:NSUnderlineStyleNone]}];
+    NSAttributedString *attrSelected = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:COLOR_BLOCKCHAIN_BLUE, NSUnderlineStyleAttributeName:[NSNumber numberWithInt:NSUnderlineStyleSingle]}];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:frame];
+    button.titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_EXTRA_SMALL];
+    [button setAttributedTitle:attrNormal forState:UIControlStateNormal];
+    [button setAttributedTitle:attrSelected forState:UIControlStateSelected];
+    [button addTarget:self action:@selector(timeSpanButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
 @end

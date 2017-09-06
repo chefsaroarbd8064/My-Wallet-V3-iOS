@@ -793,3 +793,8 @@
 #define BC_STRING_WEB_LOGIN_QR_INSTRUCTION_LABEL_SHOWN_TWO NSLocalizedString(@"Do not share it with others.", nil)
 #define BC_STRING_SHOW_QR_CODE NSLocalizedString(@"Show QR Code", nil)
 #define BC_STRING_HIDE_QR_CODE NSLocalizedString(@"Hide QR Code", nil)
+
+#define BC_STRING_WEEK NSLocalizedString(@"Week", nil)
+#define BC_STRING_MONTH NSLocalizedString(@"Month", nil)
+#define BC_STRING_YEAR NSLocalizedString(@"Year", nil)
+

@@ -37,12 +37,14 @@
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     
-    [path moveToPoint:CGPointMake(0, 5)];
-    
     [self.graphValues enumerateObjectsUsingBlock:^(NSDictionary *coordinate, NSUInteger index, BOOL *stop) {
         CGFloat convertedXCoordinate = ([[coordinate objectForKey:DICTIONARY_KEY_X] floatValue] - minX) / timeLength * self.bounds.size.width;
         CGFloat convertedYCoordinate = (1 - ([[coordinate objectForKey:DICTIONARY_KEY_Y] floatValue] - minY) / priceHeight) * self.bounds.size.height;
-        [path addLineToPoint:CGPointMake(convertedXCoordinate, convertedYCoordinate)];
+        if (index == 0) {
+            [path moveToPoint:CGPointMake(convertedXCoordinate, convertedYCoordinate)];
+        } else {
+            [path addLineToPoint:CGPointMake(convertedXCoordinate, convertedYCoordinate)];
+        }
     }];
     
     [COLOR_BLOCKCHAIN_BLUE setStroke];
