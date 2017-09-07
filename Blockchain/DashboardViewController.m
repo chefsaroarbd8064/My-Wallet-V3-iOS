@@ -20,6 +20,7 @@
 @interface DashboardViewController ()
 @property (nonatomic) BCPriceGraphView *graphView;
 @property (nonatomic) UILabel *priceLabel;
+@property (nonatomic) UILabel *titleLabel;
 @property (nonatomic) UIButton *yearButton;
 @property (nonatomic) UIButton *monthButton;
 @property (nonatomic) UIButton *weekButton;
@@ -58,12 +59,10 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     titleLabel.textColor = COLOR_BLOCKCHAIN_BLUE;
     titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_EXTRALIGHT size:FONT_SIZE_EXTRA_SMALL];
-    titleLabel.text = [BC_STRING_ETHER_PRICE uppercaseString];
-    [titleLabel sizeToFit];
-    titleLabel.center = CGPointMake(titleContainerView.frame.size.width/2, titleLabel.center.y);
     [titleContainerView addSubview:titleLabel];
+    self.titleLabel = titleLabel;
     
-    self.priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, titleLabel.frame.origin.y + titleLabel.frame.size.height, 0, 0)];
+    self.priceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.priceLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_EXTRA_LARGE];
     self.priceLabel.textColor = COLOR_BLOCKCHAIN_BLUE;
     [titleContainerView addSubview:self.priceLabel];
@@ -89,9 +88,21 @@
     [self setupTimeSpanButtons];
 }
 
+- (void)setAssetType:(AssetType)assetType
+{
+    _assetType = assetType;
+    
+    [self reload];
+}
+
 - (void)reload
 {
-    self.priceLabel.text = self.lastEthExchangeRate;
+    self.titleLabel.text = self.assetType == AssetTypeBitcoin ? [BC_STRING_BITCOIN_PRICE uppercaseString] : [BC_STRING_ETHER_PRICE uppercaseString];
+    [self.titleLabel sizeToFit];
+    self.titleLabel.center = CGPointMake([self.titleLabel superview].frame.size.width/2, self.titleLabel.center.y);
+    
+    self.priceLabel.text = self.assetType == AssetTypeBitcoin ? [NSNumberFormatter formatMoney:SATOSHI localCurrency:YES] : self.lastEthExchangeRate;
+    self.priceLabel.frame = CGRectMake(0, self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height, 0, 0);
     [self.priceLabel sizeToFit];
     self.priceLabel.center = CGPointMake(self.contentView.center.x, self.priceLabel.center.y);
     
@@ -250,6 +261,14 @@
     [self.yearButton setSelected:NO];
 
     [button setSelected:YES];
+    
+    if (button == self.weekButton) {
+        
+    } else if (button == self.monthButton) {
+        
+    } else if (button == self.yearButton) {
+        
+    }
 }
 
 - (void)updateEthExchangeRate:(NSDecimalNumber *)rate
@@ -264,6 +283,7 @@
 {
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = COLOR_LIGHT_GRAY;
     label.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
     return label;
 }

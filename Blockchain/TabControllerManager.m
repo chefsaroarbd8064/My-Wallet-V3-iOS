@@ -31,6 +31,8 @@
     
     if (self.tabViewController.selectedIndex == TAB_SEND) {
         [self showSendCoins];
+    } else if (self.tabViewController.selectedIndex == TAB_DASHBOARD) {
+        [self showDashboard];
     } else if (self.tabViewController.selectedIndex == TAB_TRANSACTIONS) {
         [self showTransactions];
     } else if (self.tabViewController.selectedIndex == TAB_RECEIVE) {
@@ -277,6 +279,20 @@
     return self.latestEthExchangeRate;
 }
 
+#pragma mark - Dashboard
+
+- (void)showDashboard
+{
+    if (!_dashboardViewController) {
+        DashboardViewController *dashboardViewController = [DashboardViewController new];
+        self.dashboardViewController = dashboardViewController;
+    }
+    
+    [_tabViewController setActiveViewController:self.dashboardViewController animated:TRUE index:TAB_DASHBOARD];
+    
+    self.dashboardViewController.assetType = self.assetType;
+}
+
 #pragma mark - Transactions
 
 - (void)showTransactions
@@ -461,12 +477,7 @@
 
 - (void)dashBoardClicked:(UITabBarItem *)sender
 {
-    if (!_dashboardViewController) {
-        DashboardViewController *dashboardViewController = [DashboardViewController new];
-        self.dashboardViewController = dashboardViewController;
-    }
-    
-    [_tabViewController setActiveViewController:self.dashboardViewController animated:TRUE index:TAB_DASHBOARD];
+    [self showDashboard];
 }
 
 - (void)receiveCoinClicked:(UITabBarItem *)sender
