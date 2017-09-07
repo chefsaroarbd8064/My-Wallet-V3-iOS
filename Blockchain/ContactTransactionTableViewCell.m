@@ -12,6 +12,7 @@
 #import "TransactionDetailViewController.h"
 #import "TransactionDetailNavigationController.h"
 #import "Transaction.h"
+#import "TransactionDetailViewModel.h"
 #import "RootService.h"
 #import "UIView+ChangeFrameAttribute.h"
 
@@ -157,7 +158,7 @@
     } else if (self.transaction.transactionState == ContactTransactionStateCompletedSend || self.transaction.transactionState == ContactTransactionStateCompletedReceive) {
         
         TransactionDetailViewController *detailViewController = [TransactionDetailViewController new];
-        detailViewController.transaction = self.transaction;
+        detailViewController.transactionModel = [[TransactionDetailViewModel alloc] initWithTransaction:self.transaction];
         
         TransactionDetailNavigationController *navigationController = [[TransactionDetailNavigationController alloc] initWithRootViewController:detailViewController];
         

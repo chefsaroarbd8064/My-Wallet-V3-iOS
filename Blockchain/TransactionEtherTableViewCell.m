@@ -9,6 +9,7 @@
 #import "TransactionEtherTableViewCell.h"
 #import "EtherTransaction.h"
 #import "NSDateFormatter+TimeAgoString.h"
+#import "TransactionDetailViewController.h"
 
 @implementation TransactionEtherTableViewCell
 
@@ -42,6 +43,12 @@
         self.actionLabel.text = [BC_STRING_SENT uppercaseString];
         self.actionLabel.textColor = COLOR_TRANSACTION_SENT;
     }
+}
+
+- (void)transactionClicked
+{
+    TransactionDetailViewController *detailViewController = [TransactionDetailViewController new];
+    detailViewController.transactionModel = [[TransactionDetailViewModel alloc] initWithEtherTransaction:self.transaction];
 }
 
 @end

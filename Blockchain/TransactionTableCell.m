@@ -109,7 +109,7 @@
 - (IBAction)transactionClicked:(UIButton *)button
 {
     TransactionDetailViewController *detailViewController = [TransactionDetailViewController new];
-    detailViewController.transaction = transaction;
+    detailViewController.transactionModel = [[TransactionDetailViewModel alloc] initWithTransaction:transaction];
     
     TransactionDetailNavigationController *navigationController = [[TransactionDetailNavigationController alloc] initWithRootViewController:detailViewController];
     navigationController.transactionHash = transaction.myHash;

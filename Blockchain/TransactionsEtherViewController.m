@@ -88,4 +88,11 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TransactionEtherTableViewCell *cell = (TransactionEtherTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    
+    [cell transactionClicked];
+}
+
 @end

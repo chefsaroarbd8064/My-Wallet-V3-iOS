@@ -1989,7 +1989,7 @@ void (^secondPasswordSuccess)(NSString *);
 {
     BOOL didFindTransaction = NO;
     for (Transaction *transaction in app.latestResponse.transactions) {
-        if ([transaction.myHash isEqualToString:self.tabControllerManager.transactionsViewController.detailViewController.transaction.myHash]) {
+        if ([transaction.myHash isEqualToString:self.tabControllerManager.transactionsViewController.detailViewController.transactionModel.myHash]) {
             NSArray *components = [fiatAmount componentsSeparatedByString:@"."];
             if (components.count > 1 && [[components lastObject] length] == 1) {
                 fiatAmount = [fiatAmount stringByAppendingString:@"0"];

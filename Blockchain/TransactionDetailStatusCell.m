@@ -21,10 +21,10 @@
     [self.accessoryButton setHidden:YES];
 }
 
-- (void)configureWithTransaction:(Transaction *)transaction
+- (void)configureWithTransactionModel:(TransactionDetailViewModel *)transactionModel
 {
-    [super configureWithTransaction:transaction];
-
+    [super configureWithTransactionModel:transactionModel];
+    
     if (self.isSetup) {
         self.mainLabel.text = BC_STRING_STATUS;
         self.accessoryButton.hidden = NO;
@@ -40,7 +40,7 @@
     
     CGFloat accessoryButtonXPosition = self.mainLabel.frame.origin.x + self.mainLabel.frame.size.width + 8;
     self.accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(accessoryButtonXPosition, 0, self.frame.size.width - self.contentView.layoutMargins.right - accessoryButtonXPosition, 60)];
-    NSString *buttonTitle = transaction.confirmations >= kConfirmationThreshold ? BC_STRING_CONFIRMED : [NSString stringWithFormat:BC_STRING_PENDING_ARGUMENT_CONFIRMATIONS, [NSString stringWithFormat:@"%u/%u", transaction.confirmations, kConfirmationThreshold]];
+    NSString *buttonTitle = transactionModel.confirmations >= kConfirmationThreshold ? BC_STRING_CONFIRMED : [NSString stringWithFormat:BC_STRING_PENDING_ARGUMENT_CONFIRMATIONS, [NSString stringWithFormat:@"%u/%u", transactionModel.confirmations, kConfirmationThreshold]];
     
     self.accessoryButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.accessoryButton addTarget:self action:@selector(showWebviewDetail) forControlEvents:UIControlEventTouchUpInside];

@@ -514,7 +514,7 @@ int lastNumberTransactions = INT_MAX;
 - (void)showTransactionDetail:(Transaction *)transaction
 {
     TransactionDetailViewController *detailViewController = [TransactionDetailViewController new];
-    detailViewController.transaction = transaction;
+    detailViewController.transactionModel = [[TransactionDetailViewModel alloc] initWithTransaction:transaction];
     
     TransactionDetailNavigationController *navigationController = [[TransactionDetailNavigationController alloc] initWithRootViewController:detailViewController];
     navigationController.transactionHash = transaction.myHash;

@@ -2219,9 +2219,9 @@
     [task resume];
 }
 
-- (NSString *)getNotePlaceholderForTransaction:(Transaction *)transaction
+- (NSString *)getNotePlaceholderForTransactionHash:(NSString *)myHash
 {
-    return [[self.context evaluateScript:[NSString stringWithFormat:@"MyWalletPhone.getNotePlaceholder(\"%@\")", transaction.myHash]] toString];
+    return [[self.context evaluateScript:[NSString stringWithFormat:@"MyWalletPhone.getNotePlaceholder(\"%@\")", myHash]] toString];
 }
 
 - (NSArray *)getSwipeAddresses:(int)numberOfAddresses label:(NSString *)label
