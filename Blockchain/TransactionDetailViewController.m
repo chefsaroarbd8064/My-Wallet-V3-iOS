@@ -75,8 +75,10 @@ const CGFloat rowHeightValueReceived = 80;
     [self setupPullToRefresh];
     [self setupTextViewInputAccessoryView];
 
-    if (![self.transactionModel.fiatAmountsAtTime objectForKey:[self getCurrencyCode]]) {
+    if (self.transactionModel.assetType == AssetTypeBitcoin && ![self.transactionModel.fiatAmountsAtTime objectForKey:[self getCurrencyCode]]) {
         [self getFiatAtTime];
+    } else {
+        [self reloadEtherData];
     }
 }
 
@@ -104,15 +106,19 @@ const CGFloat rowHeightValueReceived = 80;
 
 - (void)getFiatAtTime
 {
-    [app.wallet getFiatAtTime:self.transactionModel.time * MSEC_PER_SEC value:imaxabs(self.transactionModel.amount) currencyCode:[app.latestResponse.symbol_local.code lowercaseString]];
+    [app.wallet getFiatAtTime:self.transactionModel.time * MSEC_PER_SEC value:imaxabs(self.transactionModel.amountInSatoshi) currencyCode:[app.latestResponse.symbol_local.code lowercaseString]];
     self.isGettingFiatAtTime = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataAfterGetFiatAtTime) name:NOTIFICATION_KEY_GET_FIAT_AT_TIME object:nil];
 }
 
 - (NSString *)getNotePlaceholder
 {
-    NSString *label = [app.wallet getNotePlaceholderForTransactionHash:self.transactionModel.myHash];
-    return label.length > 0 ? label : nil;
+    if (self.transactionModel.assetType == AssetTypeBitcoin) {
+        NSString *label = [app.wallet getNotePlaceholderForTransactionHash:self.transactionModel.myHash];
+        return label.length > 0 ? label : nil;
+    } else {
+        return nil;
+    }
 }
 
 - (void)cancelEditing
@@ -167,6 +173,17 @@ const CGFloat rowHeightValueReceived = 80;
     NSArray *newTransactions = app.latestResponse.transactions;
     
     [self findAndUpdateTransaction:newTransactions];
+    
+    [self.tableView reloadData];
+    
+    if (self.refreshControl && self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
+    }
+}
+
+- (void)reloadEtherData
+{
+    [self.busyViewDelegate hideBusyView];
     
     [self.tableView reloadData];
     
@@ -346,16 +363,16 @@ const CGFloat rowHeightValueReceived = 80;
 
 - (void)showFromAddressOptions
 {
-    [self showAddressOptions:self.transactionModel.from];
+    [self showAddressOptions:self.transactionModel];
 }
 
-- (void)showAddressOptions:(NSDictionary *)transactionDict
+- (void)showAddressOptions:(TransactionDetailViewModel *)transactionModel
 {
-    NSString *address = [transactionDict objectForKey:DICTIONARY_KEY_ADDRESS];
+    NSString *address = transactionModel.fromAddress;
     
-    if ([transactionDict objectForKey:DICTIONARY_KEY_ACCOUNT_INDEX] || ![[transactionDict objectForKey:DICTIONARY_KEY_LABEL] isEqualToString:address]) return;
+    if (transactionModel.fromWithinWallet) return;
     
-    UIAlertController *copyAddressController = [UIAlertController alertControllerWithTitle:[transactionDict objectForKey:DICTIONARY_KEY_LABEL] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *copyAddressController = [UIAlertController alertControllerWithTitle:transactionModel.fromString message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [copyAddressController addAction:[UIAlertAction actionWithTitle:BC_STRING_COPY_ADDRESS style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [UIPasteboard generalPasteboard].string = address;
     }]];

@@ -26,7 +26,7 @@
 
     if (self.isSetup) {
         self.mainLabel.text = BC_STRING_FROM;
-        self.accessoryLabel.text = [transactionModel.from objectForKey:DICTIONARY_KEY_LABEL];
+        self.accessoryLabel.text = transactionModel.fromString;
         return;
     }
     
@@ -44,7 +44,7 @@
     self.accessoryLabel.textColor = COLOR_TEXT_DARK_GRAY;
     self.accessoryLabel.textAlignment = NSTextAlignmentRight;
     self.accessoryLabel.adjustsFontSizeToFitWidth = YES;
-    self.accessoryLabel.text = transactionModel.isContactTransaction && [transactionModel.txType isEqualToString:TX_TYPE_RECEIVED] ? transactionModel.contactName : [transactionModel.from objectForKey:DICTIONARY_KEY_LABEL];
+    self.accessoryLabel.text = transactionModel.isContactTransaction && [transactionModel.txType isEqualToString:TX_TYPE_RECEIVED] ? transactionModel.contactName : transactionModel.fromString;
     
     CGFloat mainLabelHeight = self.mainLabel.frame.size.height;
     CGFloat accessoryLabelHeight = self.accessoryLabel.frame.size.height;

@@ -90,6 +90,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     TransactionEtherTableViewCell *cell = (TransactionEtherTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     
     [cell transactionClicked];

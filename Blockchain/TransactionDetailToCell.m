@@ -53,7 +53,7 @@
         self.accessoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(accessoryLabelXPosition, 0, self.frame.size.width - self.contentView.layoutMargins.right - accessoryLabelXPosition, 20.5)];
         self.accessoryLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_EXTRA_EXTRA_SMALL];
         self.accessoryLabel.textAlignment = NSTextAlignmentRight;
-        self.accessoryLabel.text = transactionModel.isContactTransaction && [transactionModel.txType isEqualToString:TX_TYPE_SENT] ? transactionModel.contactName : [transactionModel.to.firstObject objectForKey:DICTIONARY_KEY_LABEL];
+        self.accessoryLabel.text = transactionModel.isContactTransaction && [transactionModel.txType isEqualToString:TX_TYPE_SENT] ? transactionModel.contactName : transactionModel.toString;
         self.accessoryLabel.adjustsFontSizeToFitWidth = YES;
         self.accessoryLabel.center = CGPointMake(self.accessoryLabel.center.x, self.contentView.center.y);
         self.accessoryLabel.textColor = COLOR_TEXT_DARK_GRAY;

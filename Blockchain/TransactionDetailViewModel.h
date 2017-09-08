@@ -6,14 +6,17 @@
 //  Copyright © 2017 Blockchain Luxembourg S.A. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "Assets.h"
 @class Transaction, EtherTransaction;
 
 @interface TransactionDetailViewModel : NSObject
-@property (nonatomic) NSDictionary *from;
+@property (nonatomic) AssetType assetType;
+@property (nonatomic) NSString *fromString;
+@property (nonatomic) NSString *fromAddress;
+@property (nonatomic) BOOL fromWithinWallet;
 @property (nonatomic) NSArray *to;
-@property (nonatomic) NSString *amountString;
-@property (nonatomic) uint64_t amount;
-@property (nonatomic) NSString *feeString;
+@property (nonatomic) NSString *toString;
+@property (nonatomic) uint64_t amountInSatoshi;
 @property (nonatomic) NSString *txType;
 @property (nonatomic) NSString *txDescription;
 @property (nonatomic) NSString *dateString;
@@ -34,5 +37,6 @@
 
 - (id)initWithTransaction:(Transaction *)transaction;
 - (id)initWithEtherTransaction:(EtherTransaction *)etherTransaction;
-
+- (NSString *)getAmountString;
+- (NSString *)getFeeString;
 @end

@@ -11,15 +11,24 @@
 #import "Transaction.h"
 #import "EtherTransaction.h"
 #import "NSNumberFormatter+Currencies.h"
-
+@interface TransactionDetailViewModel ()
+@property (nonatomic) NSString *amountString;
+@property (nonatomic) uint64_t feeInSatoshi;
+@property (nonatomic) NSString *feeString;
+@end
 @implementation TransactionDetailViewModel
 
 - (id)initWithTransaction:(Transaction *)transaction
 {
     if (self == [super init]) {
-        self.from = transaction.from;
+        self.assetType = AssetTypeBitcoin;
+        self.fromString = [transaction.from objectForKey:DICTIONARY_KEY_LABEL];
+        self.fromAddress = [transaction.from objectForKey:DICTIONARY_KEY_ADDRESS];
+        self.fromWithinWallet = [transaction.from objectForKey:DICTIONARY_KEY_ACCOUNT_INDEX] || ![[transaction.from objectForKey:DICTIONARY_KEY_LABEL] isEqualToString:self.fromAddress];
         self.to = transaction.to;
-        self.amount = ABS(transaction.amount);
+        self.toString = [transaction.to.firstObject objectForKey:DICTIONARY_KEY_LABEL];
+        self.amountInSatoshi = ABS(transaction.amount);
+        self.feeInSatoshi = transaction.fee;
         self.txType = transaction.txType;
         self.time = transaction.time;
         self.note = transaction.note;
@@ -29,7 +38,6 @@
         self.replaceByFee = transaction.replaceByFee;
         self.dateString = [self getDate];
         self.myHash = transaction.myHash;
-        self.feeString = [NSNumberFormatter formatMoneyWithLocalSymbol:ABS(transaction.fee)];
         
         if ([transaction isMemberOfClass:[ContactTransaction class]]) {
             ContactTransaction *contactTransaction = (ContactTransaction *)transaction;
@@ -44,7 +52,16 @@
 - (id)initWithEtherTransaction:(EtherTransaction *)etherTransaction
 {
     if (self == [super init]) {
-        
+        self.assetType = AssetTypeEther;
+        self.fromString = etherTransaction.from;
+        self.to = @[etherTransaction.to];
+        self.toString = etherTransaction.to;
+        self.amountString = etherTransaction.amount;
+        self.myHash = etherTransaction.myHash;
+        self.feeString = etherTransaction.fee;
+        self.note = nil;
+        self.time = etherTransaction.time;
+        self.dateString = [self getDate];
     }
     return self;
 }
@@ -58,6 +75,26 @@
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.time];
     NSString *dateString = [dateFormatter stringFromDate:date];
     return dateString;
+}
+
+- (NSString *)getAmountString
+{
+    if (self.assetType == AssetTypeBitcoin) {
+        return [NSNumberFormatter formatMoneyWithLocalSymbol:ABS(self.amountInSatoshi)];
+    } else if (self.assetType == AssetTypeEther) {
+        return self.amountString;
+    }
+    return nil;
+}
+
+- (NSString *)getFeeString
+{
+    if (self.assetType == AssetTypeBitcoin) {
+        return [NSNumberFormatter formatMoneyWithLocalSymbol:ABS(self.feeInSatoshi)];
+    } else if (self.assetType == AssetTypeEther) {
+        return self.amountString;
+    }
+    return nil;
 }
 
 @end

@@ -10,6 +10,8 @@
 #import "EtherTransaction.h"
 #import "NSDateFormatter+TimeAgoString.h"
 #import "TransactionDetailViewController.h"
+#import "TransactionDetailNavigationController.h"
+#import "RootService.h"
 
 @implementation TransactionEtherTableViewCell
 
@@ -48,7 +50,24 @@
 - (void)transactionClicked
 {
     TransactionDetailViewController *detailViewController = [TransactionDetailViewController new];
-    detailViewController.transactionModel = [[TransactionDetailViewModel alloc] initWithEtherTransaction:self.transaction];
+    TransactionDetailViewModel *model = [[TransactionDetailViewModel alloc] initWithEtherTransaction:self.transaction];
+    detailViewController.transactionModel = model;
+
+    TransactionDetailNavigationController *navigationController = [[TransactionDetailNavigationController alloc] initWithRootViewController:detailViewController];
+    navigationController.transactionHash = model.myHash;
+    
+    detailViewController.busyViewDelegate = navigationController;
+    navigationController.onDismiss = ^() {
+        app.tabControllerManager.transactionsViewController.detailViewController = nil;
+    };
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    app.tabControllerManager.transactionsViewController.detailViewController = detailViewController;
+    
+    if (app.topViewControllerDelegate) {
+        [app.topViewControllerDelegate presentViewController:navigationController animated:YES completion:nil];
+    } else {
+        [app.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 @end
