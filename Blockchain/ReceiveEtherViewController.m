@@ -45,6 +45,7 @@
     qrCodeImageView.userInteractionEnabled = YES;
     
     UILabel *instructionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 40, 0)];
+    instructionsLabel.textColor = COLOR_TEXT_DARK_GRAY;
     instructionsLabel.textAlignment = NSTextAlignmentCenter;
     instructionsLabel.numberOfLines = 0;
     instructionsLabel.font = [UIFont fontWithName:FONT_GILL_SANS_REGULAR size:FONT_SIZE_SMALL];
@@ -55,6 +56,7 @@
     [self.view addSubview:instructionsLabel];
     
     UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 40, 40)];
+    addressLabel.textColor = COLOR_TEXT_DARK_GRAY;
     addressLabel.textAlignment = NSTextAlignmentCenter;
     addressLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_EXTRA_EXTRA_EXTRA_SMALL];
     addressLabel.text = etherAddress;
