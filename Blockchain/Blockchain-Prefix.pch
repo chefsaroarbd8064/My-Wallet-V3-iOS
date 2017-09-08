@@ -827,7 +827,7 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/
 #define MENU_ENTRY_HEIGHT 54
 #define BALANCE_ENTRY_HEIGHT 58
 
-#define MENU_BITCOIN_TICKER_HEIGHT 145
+#define MENU_TOP_BANNER_HEIGHT 65
 
 #define MENU_CELL_INDEX_UPGRADE 0
 

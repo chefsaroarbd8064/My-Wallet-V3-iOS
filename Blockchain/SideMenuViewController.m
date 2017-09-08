@@ -211,9 +211,9 @@ int accountEntries = 0;
 
 - (void)reloadTableViewSize
 {
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * self.menuEntriesCount + BALANCE_ENTRY_HEIGHT * (balanceEntries + 1) + SECTION_HEADER_HEIGHT + MENU_BITCOIN_TICKER_HEIGHT);
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * self.menuEntriesCount + BALANCE_ENTRY_HEIGHT * (balanceEntries + 1) + SECTION_HEADER_HEIGHT + MENU_TOP_BANNER_HEIGHT);
     if (![self showBalances]) {
-        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * self.menuEntriesCount + MENU_BITCOIN_TICKER_HEIGHT);
+        self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - sideMenu.anchorLeftPeekAmount, MENU_ENTRY_HEIGHT * self.menuEntriesCount + MENU_TOP_BANNER_HEIGHT);
     }
     
     // If the tableView is bigger than the screen, enable scrolling and resize table view to screen size
@@ -356,7 +356,7 @@ int accountEntries = 0;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return MENU_BITCOIN_TICKER_HEIGHT;
+        return MENU_TOP_BANNER_HEIGHT;
     }
     
     return 0;
@@ -366,19 +366,11 @@ int accountEntries = 0;
 {
     // Total Balance
     if (section == 0) {
-        UITableViewHeaderFooterView *view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, MENU_BITCOIN_TICKER_HEIGHT)];
+        UITableViewHeaderFooterView *view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, MENU_TOP_BANNER_HEIGHT)];
         UIView *backgroundView = [[UIView alloc] initWithFrame:view.frame];
 
         [backgroundView setBackgroundColor:COLOR_BLOCKCHAIN_BLUE];
         view.backgroundView = backgroundView;
-        
-        UILabel *tickerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, self.tableView.frame.size.width - 23, 30)];
-        tickerLabel.adjustsFontSizeToFitWidth = YES;
-        tickerLabel.text = [NSString stringWithFormat:@"%@ = %@", [NSNumberFormatter formatBTC:[CURRENCY_CONVERSION_BTC longLongValue]], [NSNumberFormatter formatMoney:SATOSHI localCurrency:YES]];
-        tickerLabel.textColor = [UIColor whiteColor];
-        tickerLabel.center = CGPointMake(tickerLabel.center.x, view.center.y);
-        tickerLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_TICKER];
-        [view addSubview:tickerLabel];
         
         return view;
     }
