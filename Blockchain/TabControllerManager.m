@@ -235,10 +235,15 @@
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:BC_STRING_YOUR_ETHER_ADDRESS message:BC_STRING_ETHER_TRANSFER_INFO preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:BC_STRING_NEXT style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [self.tabViewController setupTransferToNewEtherAddress];
     }]];
     
     [self.tabViewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showConfirmTransferToNewEthAddress:(NSString *)from to:(NSString *)to amount:(NSString *)amount fee:(NSString *)fee
+{
+    [self.tabViewController showConfirmTransferToNewEthAddress:from to:to amount:amount fee:fee];
 }
 
 - (void)didFetchEthExchangeRate:(NSNumber *)rate

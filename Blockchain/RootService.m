@@ -2438,6 +2438,11 @@ void (^secondPasswordSuccess)(NSString *);
     [self.tabControllerManager promptEthTransferToNewAddress];
 }
 
+- (void)showConfirmTransferToNewEthAddress:(NSString *)from to:(NSString *)to amount:(NSString *)amount fee:(NSString *)fee
+{
+    [self.tabControllerManager showConfirmTransferToNewEthAddress:from to:to amount:amount fee:fee];
+}
+
 #pragma mark - Show Screens
 
 - (void)showContacts

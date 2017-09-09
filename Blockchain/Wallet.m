@@ -887,6 +887,10 @@
         [weakSelf prompt_transfer_eth_to_new_address];
     };
     
+    self.context[@"objc_show_confirm_transfer_eth_to_new_address"] = ^(JSValue *from, JSValue *to, JSValue *amount, JSValue *fee) {
+        [weakSelf show_confirm_transfer_eth_to_new_address:from to:to amount:amount fee:fee];
+    };
+    
     [self.context evaluateScript:[self getJSSource]];
     
     self.context[@"XMLHttpRequest"] = [ModuleXMLHttpRequest class];
@@ -2592,6 +2596,13 @@
     return nil;
 }
 
+- (void)setupTransferToNewEtherAddress
+{
+    if ([self isInitialized]) {
+        [self.context evaluateScript:@"MyWalletPhone.setupTransferToNewEtherAddress()"];
+    }
+}
+
 # pragma mark - Transaction handlers
 
 - (void)tx_on_start:(NSString*)txProgressID
@@ -4050,6 +4061,15 @@
         [self.delegate promptEthTransferToNewAddress];
     } else {
         DLog(@"Error: delegate of class %@ does not respond to selector promptEthTransferToNewAddress!", [delegate class]);
+    }
+}
+
+- (void)show_confirm_transfer_eth_to_new_address:(JSValue *)from to:(JSValue *)to amount:(JSValue *)amount fee:(JSValue *)fee
+{
+    if ([self.delegate respondsToSelector:@selector(showConfirmTransferToNewEthAddress:to:amount:fee:)]) {
+        [self.delegate showConfirmTransferToNewEthAddress:[from toString] to:[to toString] amount:[amount toString] fee:[fee toString]];
+    } else {
+        DLog(@"Error: delegate of class %@ does not respond to selector showConfirmTransferToNewEthAddress!", [delegate class]);
     }
 }
 

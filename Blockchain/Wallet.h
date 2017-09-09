@@ -134,6 +134,7 @@
 - (void)didUpdateEthPayment:(NSDictionary *)payment;
 - (void)didFetchEthExchangeRate:(NSNumber *)rate;
 - (void)promptEthTransferToNewAddress;
+- (void)showConfirmTransferToNewEthAddress:(NSString *)from to:(NSString *)to amount:(NSString *)amount fee:(NSString *)fee;
 @end
 
 @interface Wallet : NSObject <UIWebViewDelegate, SRWebSocketDelegate, ExchangeAccountDelegate> {
@@ -431,4 +432,5 @@ typedef enum {
 - (BOOL)isEthAddress:(NSString *)address;
 - (void)sendEtherPayment;
 - (NSString *)getEtherAddress;
+- (void)setupTransferToNewEtherAddress;
 @end
