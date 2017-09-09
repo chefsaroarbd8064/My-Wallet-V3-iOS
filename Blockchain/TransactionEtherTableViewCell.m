@@ -31,6 +31,7 @@
     self.ethButton.titleLabel.minimumScaleFactor = 0.75f;
     self.ethButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [self.ethButton setTitle:self.transaction.amountTruncated forState:UIControlStateNormal];
+    [self.ethButton addTarget:self action:@selector(ethButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
     if ([self.transaction.txType isEqualToString:TX_TYPE_TRANSFER]) {
         [self.ethButton setBackgroundColor:COLOR_TRANSACTION_TRANSFERRED];
@@ -68,6 +69,11 @@
     } else {
         [app.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
     }
+}
+
+- (void)ethButtonClicked
+{
+    [self transactionClicked];
 }
 
 @end
