@@ -55,7 +55,8 @@
     toLabel.text = BC_STRING_TO;
     [self.view addSubview:toLabel];
     
-    BCSecureTextField *toField = [[BCSecureTextField alloc] initWithFrame:CGRectMake(toLabel.frame.origin.x + toLabel.frame.size.width + 8, 6, 222, 39)];
+    CGFloat toFieldOriginX = toLabel.frame.origin.x + toLabel.frame.size.width + 8;
+    BCSecureTextField *toField = [[BCSecureTextField alloc] initWithFrame:CGRectMake(toFieldOriginX, 6, self.view.frame.size.width - 8 - toFieldOriginX, 39)];
     toField.font = [UIFont fontWithName:FONT_MONTSERRAT_LIGHT size:FONT_SIZE_SMALL];
     toField.placeholder = BC_STRING_ENTER_ETHER_ADDRESS_OR_SELECT;
     toField.delegate = self;
