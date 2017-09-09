@@ -44,7 +44,7 @@
 {
     [_sendBitcoinViewController reload];
     [_sendEtherViewController reload];
-    [_transactionsViewController reload];
+    [_transactionsBitcoinViewController reload];
     [_receiveViewController reload];
 }
 
@@ -52,7 +52,7 @@
 {
     [_dashboardViewController reload];
     [_sendBitcoinViewController reloadAfterMultiAddressResponse];
-    [_transactionsViewController reload];
+    [_transactionsBitcoinViewController reload];
     [_receiveViewController reload];
 }
 
@@ -60,7 +60,7 @@
 {
     [self.sendBitcoinViewController hideSelectFromAndToButtonsIfAppropriate];
     
-    [_transactionsViewController didGetMessages];
+    [_transactionsBitcoinViewController didGetMessages];
 }
 
 - (void)logout
@@ -72,7 +72,7 @@
 - (void)forgetWallet
 {
     self.receiveViewController = nil;
-    [_transactionsViewController setData:nil];
+    [_transactionsBitcoinViewController setData:nil];
 }
 
 #pragma mark - BTC Send
@@ -214,12 +214,12 @@
 
 - (void)updateLoadedAllTransactions:(NSNumber *)loadedAll
 {
-    _transactionsViewController.loadedAllTransactions = [loadedAll boolValue];
+    _transactionsBitcoinViewController.loadedAllTransactions = [loadedAll boolValue];
 }
 
 - (void)receivedTransactionMessage
 {
-    [_transactionsViewController didReceiveTransactionMessage];
+    [_transactionsBitcoinViewController didReceiveTransactionMessage];
     
     [_receiveViewController storeRequestedAmount];
 }
@@ -313,11 +313,11 @@
 - (void)showTransactions
 {
     if (self.assetType == AssetTypeBitcoin) {
-        if (!_transactionsViewController) {
-            _transactionsViewController = [[[NSBundle mainBundle] loadNibNamed:NIB_NAME_TRANSACTIONS owner:self options:nil] firstObject];
+        if (!_transactionsBitcoinViewController) {
+            _transactionsBitcoinViewController = [[[NSBundle mainBundle] loadNibNamed:NIB_NAME_TRANSACTIONS owner:self options:nil] firstObject];
         }
         
-        [_tabViewController setActiveViewController:_transactionsViewController animated:NO index:TAB_TRANSACTIONS];
+        [_tabViewController setActiveViewController:_transactionsBitcoinViewController animated:NO index:TAB_TRANSACTIONS];
     } else if (self.assetType == AssetTypeEther) {
         if (!_transactionsEtherViewController) {
             _transactionsEtherViewController = [[TransactionsEtherViewController alloc] init];
@@ -346,9 +346,9 @@
 
 - (void)filterTransactionsByAccount:(int)accountIndex filterLabel:(NSString *)filterLabel
 {
-    _transactionsViewController.clickedFetchMore = NO;
-    _transactionsViewController.filterIndex = accountIndex;
-    [_transactionsViewController changeFilterLabel:filterLabel];
+    _transactionsBitcoinViewController.clickedFetchMore = NO;
+    _transactionsBitcoinViewController.filterIndex = accountIndex;
+    [_transactionsBitcoinViewController changeFilterLabel:filterLabel];
     
     [_sendBitcoinViewController resetFromAddress];
     [_receiveViewController reloadMainAddress];
@@ -356,45 +356,45 @@
 
 - (NSInteger)getFilterIndex
 {
-    return _transactionsViewController.filterIndex;
+    return _transactionsBitcoinViewController.filterIndex;
 }
 
 - (void)filterTransactionsByImportedAddresses
 {
-    _transactionsViewController.clickedFetchMore = NO;
-    _transactionsViewController.filterIndex = FILTER_INDEX_IMPORTED_ADDRESSES;
-    [_transactionsViewController changeFilterLabel:BC_STRING_IMPORTED_ADDRESSES];
+    _transactionsBitcoinViewController.clickedFetchMore = NO;
+    _transactionsBitcoinViewController.filterIndex = FILTER_INDEX_IMPORTED_ADDRESSES;
+    [_transactionsBitcoinViewController changeFilterLabel:BC_STRING_IMPORTED_ADDRESSES];
 }
 
 - (void)removeTransactionsFilter
 {
-    _transactionsViewController.clickedFetchMore = NO;
-    _transactionsViewController.filterIndex = FILTER_INDEX_ALL;
+    _transactionsBitcoinViewController.clickedFetchMore = NO;
+    _transactionsBitcoinViewController.filterIndex = FILTER_INDEX_ALL;
 }
 
 - (void)selectPayment:(NSString *)payment
 {
-    [self.transactionsViewController selectPayment:payment];
+    [self.transactionsBitcoinViewController selectPayment:payment];
 }
 
 - (void)showTransactionDetailForHash:(NSString *)hash
 {
-    [self.transactionsViewController showTransactionDetailForHash:hash];
+    [self.transactionsBitcoinViewController showTransactionDetailForHash:hash];
 }
 
 - (void)setTransactionsViewControllerMessageIdentifier:(NSString *)identifier
 {
-    self.transactionsViewController.messageIdentifier = identifier;
+    self.transactionsBitcoinViewController.messageIdentifier = identifier;
 }
 
 - (void)showFilterResults
 {
-    [_tabViewController setActiveViewController:_transactionsViewController animated:FALSE index:1];
+    [_tabViewController setActiveViewController:_transactionsBitcoinViewController animated:FALSE index:1];
 }
 
 - (void)selectorButtonClicked
 {
-    [_transactionsViewController showFilterMenu];
+    [_transactionsBitcoinViewController showFilterMenu];
 }
 
 #pragma mark - Reloading
@@ -402,7 +402,7 @@
 - (void)reloadSymbols
 {
     [_sendBitcoinViewController reloadSymbols];
-    [_transactionsViewController reloadSymbols];
+    [_transactionsBitcoinViewController reloadSymbols];
 }
 
 - (void)reloadSendController
@@ -458,19 +458,19 @@
 
 - (void)updateTransactionsViewControllerData:(MultiAddressResponse *)data
 {
-    [_transactionsViewController updateData:data];
+    [_transactionsBitcoinViewController updateData:data];
 }
 
 - (void)didSetLatestBlock:(LatestBlock *)block
 {
-    _transactionsViewController.latestBlock = block;
-    [_transactionsViewController reload];
+    _transactionsBitcoinViewController.latestBlock = block;
+    [_transactionsBitcoinViewController reload];
 }
 
 - (void)didGetMessagesOnFirstLoad
 {
-    if (_transactionsViewController.messageIdentifier) {
-        [_transactionsViewController selectPayment:_transactionsViewController.messageIdentifier];
+    if (_transactionsBitcoinViewController.messageIdentifier) {
+        [_transactionsBitcoinViewController selectPayment:_transactionsBitcoinViewController.messageIdentifier];
     }
 }
 

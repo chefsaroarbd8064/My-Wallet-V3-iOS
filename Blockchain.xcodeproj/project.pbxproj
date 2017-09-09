@@ -172,7 +172,7 @@
 		9F7480D31514030800BC4292 /* alert-received.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F7480D21514030800BC4292 /* alert-received.wav */; };
 		9F7480D51514041B00BC4292 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F7480D41514041A00BC4292 /* AudioToolbox.framework */; };
 		9F7480E315140EF200BC4292 /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F7480E215140EA500BC4292 /* TabViewController.m */; };
-		9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3114BC622E00048EFB /* TransactionsViewController.m */; };
+		9F765F3214BC622E00048EFB /* TransactionsBitcoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3114BC622E00048EFB /* TransactionsBitcoinViewController.m */; };
 		9F765F3914BC7BAC00048EFB /* TransactionTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */; };
 		9F765F3D14BC7C4F00048EFB /* Transaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F3C14BC7C4F00048EFB /* Transaction.m */; };
 		9F765F4714BC8AEF00048EFB /* MultiAddressResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F765F4614BC8AEF00048EFB /* MultiAddressResponse.m */; };
@@ -971,8 +971,8 @@
 		9F7480E115140EA500BC4292 /* TabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
 		9F7480E215140EA500BC4292 /* TabViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
 		9F749DFF1514F1EF00B3A8B8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		9F765F3014BC622E00048EFB /* TransactionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsViewController.h; sourceTree = "<group>"; };
-		9F765F3114BC622E00048EFB /* TransactionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsViewController.m; sourceTree = "<group>"; };
+		9F765F3014BC622E00048EFB /* TransactionsBitcoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsBitcoinViewController.h; sourceTree = "<group>"; };
+		9F765F3114BC622E00048EFB /* TransactionsBitcoinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsBitcoinViewController.m; sourceTree = "<group>"; };
 		9F765F3714BC7BAC00048EFB /* TransactionTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionTableCell.h; sourceTree = "<group>"; };
 		9F765F3814BC7BAC00048EFB /* TransactionTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionTableCell.m; sourceTree = "<group>"; };
 		9F765F3B14BC7C4F00048EFB /* Transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
@@ -1690,8 +1690,8 @@
 				67E9674D19DF285000305358 /* SideMenuViewController.m */,
 				9F7480E115140EA500BC4292 /* TabViewController.h */,
 				9F7480E215140EA500BC4292 /* TabViewController.m */,
-				9F765F3014BC622E00048EFB /* TransactionsViewController.h */,
-				9F765F3114BC622E00048EFB /* TransactionsViewController.m */,
+				9F765F3014BC622E00048EFB /* TransactionsBitcoinViewController.h */,
+				9F765F3114BC622E00048EFB /* TransactionsBitcoinViewController.m */,
 				A2913FA11B31830000DC6C15 /* BackupNavigationViewController.swift */,
 				A2599B9E1B0B5FC800C2EA81 /* BackupViewController.swift */,
 				A2599BA41B0B725400C2EA81 /* BackupWordsViewController.swift */,
@@ -2230,7 +2230,7 @@
 				C9BE917D1945D8F600FD516D /* PEViewController.m in Sources */,
 				674709EC19D1D14300757D46 /* BCWelcomeView.m in Sources */,
 				67D95A281B3DDC900012EBB1 /* Constants.swift in Sources */,
-				9F765F3214BC622E00048EFB /* TransactionsViewController.m in Sources */,
+				9F765F3214BC622E00048EFB /* TransactionsBitcoinViewController.m in Sources */,
 				2322DCC21D771831000E5AC1 /* SRURLUtilities.m in Sources */,
 				23964C031DCA3F19001323BE /* KeyPair.m in Sources */,
 				230FD2DC1C5BFB4300336683 /* QRCodeGenerator.m in Sources */,

@@ -15,7 +15,7 @@
 #import "UITextField+Blocks.h"
 #import "UIViewController+AutoDismiss.h"
 #import "LocalizationConstants.h"
-#import "TransactionsViewController.h"
+#import "TransactionsBitcoinViewController.h"
 #import "PrivateKeyReader.h"
 #import "UIView+ChangeFrameAttribute.h"
 #import "TransferAllFundsBuilder.h"
@@ -588,12 +588,12 @@ BOOL displayingLocalSymbolSend;
              
              // Close transaction modal, go to transactions view, scroll to top and animate new transaction
              [app closeModalWithTransition:kCATransitionFade];
-             [app.tabControllerManager.transactionsViewController didReceiveTransactionMessage];
+             [app.tabControllerManager.transactionsBitcoinViewController didReceiveTransactionMessage];
              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [app.tabControllerManager transactionsClicked:nil];
              });
              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                 [app.tabControllerManager.transactionsViewController.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+                 [app.tabControllerManager.transactionsBitcoinViewController.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
              });
              
              if (self.noteToSet) {
@@ -734,12 +734,12 @@ BOOL displayingLocalSymbolSend;
     
     // Close transaction modal, go to transactions view, scroll to top and animate new transaction
     [app closeAllModals];
-    [app.tabControllerManager.transactionsViewController didReceiveTransactionMessage];
+    [app.tabControllerManager.transactionsBitcoinViewController didReceiveTransactionMessage];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [app.tabControllerManager transactionsClicked:nil];
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [app.tabControllerManager.transactionsViewController.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+        [app.tabControllerManager.transactionsBitcoinViewController.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     });
     
     [self reload];

@@ -18,7 +18,7 @@
 #import "NSString+NSString_EscapeQuotes.h"
 #import "crypto_scrypt.h"
 #import "NSData+Hex.h"
-#import "TransactionsViewController.h"
+#import "TransactionsBitcoinViewController.h"
 #import "NSArray+EncodedJSONString.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "ModuleXMLHttpRequest.h"
@@ -2841,7 +2841,7 @@
     
     NSString *filter = @"";
 #ifdef ENABLE_TRANSACTION_FILTERING
-    int filterIndex = (int)app.tabControllerManager.transactionsViewController.filterIndex;
+    int filterIndex = (int)app.tabControllerManager.transactionsBitcoinViewController.filterIndex;
     
     if (filterIndex == FILTER_INDEX_ALL) {
         filter = @"";

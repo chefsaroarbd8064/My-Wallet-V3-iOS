@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Blockchain Luxembourg S.A. All rights reserved.
 //
 
-#import "TransactionsViewController.h"
+#import "TransactionsBitcoinViewController.h"
 #import "Transaction.h"
 #import "TransactionTableCell.h"
 #import "MultiAddressResponse.h"
@@ -18,7 +18,7 @@
 #import "BCAddressSelectionView.h"
 #import "TransactionDetailNavigationController.h"
 
-@interface TransactionsViewController () <AddressSelectionDelegate, UIScrollViewDelegate, ContactTransactionCellDelegate>
+@interface TransactionsBitcoinViewController () <AddressSelectionDelegate, UIScrollViewDelegate, ContactTransactionCellDelegate>
 
 @property (nonatomic) int sectionMain;
 @property (nonatomic) int sectionContactsPending;
@@ -35,7 +35,7 @@
 
 @end
 
-@implementation TransactionsViewController
+@implementation TransactionsBitcoinViewController
 
 @synthesize data;
 @synthesize latestBlock;
@@ -521,10 +521,10 @@ int lastNumberTransactions = INT_MAX;
     
     detailViewController.busyViewDelegate = navigationController;
     navigationController.onDismiss = ^() {
-        app.tabControllerManager.transactionsViewController.detailViewController = nil;
+        app.tabControllerManager.transactionsBitcoinViewController.detailViewController = nil;
     };
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    app.tabControllerManager.transactionsViewController.detailViewController = detailViewController;
+    app.tabControllerManager.transactionsBitcoinViewController.detailViewController = detailViewController;
     
     if (app.topViewControllerDelegate) {
         [app.topViewControllerDelegate presentViewController:navigationController animated:YES completion:nil];

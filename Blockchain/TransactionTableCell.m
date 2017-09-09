@@ -9,7 +9,7 @@
 #import "TransactionTableCell.h"
 #import "Transaction.h"
 #import "RootService.h"
-#import "TransactionsViewController.h"
+#import "TransactionsBitcoinViewController.h"
 #import "TransactionDetailViewController.h"
 #import "TransactionDetailNavigationController.h"
 #import "NSDateFormatter+TimeAgoString.h"
@@ -116,10 +116,10 @@
     
     detailViewController.busyViewDelegate = navigationController;
     navigationController.onDismiss = ^() {
-        app.tabControllerManager.transactionsViewController.detailViewController = nil;
+        app.tabControllerManager.transactionsBitcoinViewController.detailViewController = nil;
     };
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    app.tabControllerManager.transactionsViewController.detailViewController = detailViewController;
+    app.tabControllerManager.transactionsBitcoinViewController.detailViewController = detailViewController;
     
     if (app.topViewControllerDelegate) {
         [app.topViewControllerDelegate presentViewController:navigationController animated:YES completion:nil];

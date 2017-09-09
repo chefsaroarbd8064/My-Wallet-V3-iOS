@@ -18,7 +18,7 @@
 #import "Wallet.h"
 #import "BCFadeView.h"
 #import "TabViewController.h"
-#import "TransactionsViewController.h"
+#import "TransactionsBitcoinViewController.h"
 #import "BCCreateWalletView.h"
 #import "BCManualPairView.h"
 #import "Transaction.h"
@@ -312,8 +312,8 @@ void (^secondPasswordSuccess)(NSString *);
         [_settingsNavigationController dismissViewControllerAnimated:NO completion:nil];
     }
     
-    app.tabControllerManager.transactionsViewController.loadedAllTransactions = NO;
-    app.tabControllerManager.transactionsViewController.messageIdentifier = nil;
+    app.tabControllerManager.transactionsBitcoinViewController.loadedAllTransactions = NO;
+    app.tabControllerManager.transactionsBitcoinViewController.messageIdentifier = nil;
     app.wallet.isFetchingTransactions = NO;
     app.wallet.isFilteringTransactions = NO;
     
@@ -1989,7 +1989,7 @@ void (^secondPasswordSuccess)(NSString *);
 {
     BOOL didFindTransaction = NO;
     for (Transaction *transaction in app.latestResponse.transactions) {
-        if ([transaction.myHash isEqualToString:self.tabControllerManager.transactionsViewController.detailViewController.transactionModel.myHash]) {
+        if ([transaction.myHash isEqualToString:self.tabControllerManager.transactionsBitcoinViewController.detailViewController.transactionModel.myHash]) {
             NSArray *components = [fiatAmount componentsSeparatedByString:@"."];
             if (components.count > 1 && [[components lastObject] length] == 1) {
                 fiatAmount = [fiatAmount stringByAppendingString:@"0"];
@@ -2184,7 +2184,7 @@ void (^secondPasswordSuccess)(NSString *);
                     alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
                     [alert addAction:[UIAlertAction actionWithTitle:BC_STRING_NOT_NOW style:UIAlertActionStyleCancel handler:nil]];
                     
-                    if (self.tabControllerManager.tabViewController.activeViewController == self.tabControllerManager.transactionsViewController) {
+                    if (self.tabControllerManager.tabViewController.activeViewController == self.tabControllerManager.transactionsBitcoinViewController) {
                         [alert addAction:[UIAlertAction actionWithTitle:BC_STRING_GO_TO_REQUEST style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             [app closeAllModals];
                             [app closeSideMenu];

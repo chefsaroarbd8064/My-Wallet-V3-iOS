@@ -23,7 +23,7 @@
 @class MultiAddressResponse;
 @class LatestBlock;
 
-@interface TransactionsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate>
+@interface TransactionsBitcoinViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate>
 {
     IBOutlet UITableView *tableView;
     
