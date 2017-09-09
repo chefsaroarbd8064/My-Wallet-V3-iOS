@@ -46,9 +46,9 @@
     
     [self setupPullToRefresh];
     
-    [self loadTransactions];
-    
     [self setupNoTransactionsViewInView:self.tableView];
+    
+    [self loadTransactions];
 }
 
 - (void)setupPullToRefresh
@@ -68,6 +68,9 @@
     self.transactions = [[app.wallet getEthTransactions] sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *obj1, NSDictionary *obj2) {
         return [obj1 objectForKey:DICTIONARY_KEY_TIME] < [obj2 objectForKey:DICTIONARY_KEY_TIME];
     }];
+    
+    self.noTransactionsView.hidden = self.transactions.count > 0;
+    
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
