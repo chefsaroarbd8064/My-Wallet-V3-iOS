@@ -19,11 +19,12 @@
  */
 
 #import "TransactionDetailViewController.h"
+#import "TransactionsViewController.h"
 
 @class MultiAddressResponse;
 @class LatestBlock;
 
-@interface TransactionsBitcoinViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate>
+@interface TransactionsBitcoinViewController : TransactionsViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate>
 {
     IBOutlet UITableView *tableView;
     

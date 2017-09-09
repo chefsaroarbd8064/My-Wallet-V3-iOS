@@ -11,6 +11,16 @@
 #import "TransactionEtherTableViewCell.h"
 #import "EtherTransaction.h"
 
+@interface TransactionsViewController ()
+@property (nonatomic) UILabel *noTransactionsTitle;
+@property (nonatomic) UILabel *noTransactionsDescription;
+@property (nonatomic) UIButton *getBitcoinButton;
+
+@property (nonatomic) UIView *noTransactionsView;
+
+- (void)setupNoTransactionsViewInView:(UIView *)view;
+@end
+
 @interface TransactionsEtherViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) UIRefreshControl *refreshControl;
@@ -31,11 +41,14 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:self.tableView];
     
     [self setupPullToRefresh];
     
     [self loadTransactions];
+    
+    [self setupNoTransactionsViewInView:self.tableView];
 }
 
 - (void)setupPullToRefresh
