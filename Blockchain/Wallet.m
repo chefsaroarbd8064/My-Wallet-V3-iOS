@@ -883,6 +883,10 @@
         [weakSelf eth_socket_send:[message toString]];
     };
     
+    self.context[@"objc_prompt_transfer_eth_to_new_address"] = ^() {
+        [weakSelf prompt_transfer_eth_to_new_address];
+    };
+    
     [self.context evaluateScript:[self getJSSource]];
     
     self.context[@"XMLHttpRequest"] = [ModuleXMLHttpRequest class];
@@ -4038,6 +4042,15 @@
     NSError *error;
     [self.ethSocket sendString:message error:&error];
     if (error) DLog(@"Error sending eth socket message: %@", [error localizedDescription]);
+}
+
+- (void)prompt_transfer_eth_to_new_address
+{
+    if ([self.delegate respondsToSelector:@selector(promptEthTransferToNewAddress)]) {
+        [self.delegate promptEthTransferToNewAddress];
+    } else {
+        DLog(@"Error: delegate of class %@ does not respond to selector promptEthTransferToNewAddress!", [delegate class]);
+    }
 }
 
 # pragma mark - Calls from Obj-C to JS for HD wallet

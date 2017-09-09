@@ -2328,7 +2328,16 @@ MyWalletPhone.getEthExchangeRate = function(currencyCode) {
 }
 
 MyWalletPhone.getEthBalance = function() {
-    return MyWallet.wallet.eth.balance;
+    
+    var eth = MyWallet.wallet.eth;
+    
+    if (eth.legacyAccount.balance > 0) {
+        console.log('Eth legacy address balance is ');
+        console.log(eth.legacyAccount.balance);
+        objc_prompt_transfer_eth_to_new_address();
+    }
+    
+    return eth.balance;
 }
 
 MyWalletPhone.getEthTransactions = function() {

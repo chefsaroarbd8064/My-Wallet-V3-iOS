@@ -2433,6 +2433,11 @@ void (^secondPasswordSuccess)(NSString *);
     [self.tabControllerManager didFetchEthExchangeRate:rate];
 }
 
+- (void)promptEthTransferToNewAddress
+{
+    [self.tabControllerManager promptEthTransferToNewAddress];
+}
+
 #pragma mark - Show Screens
 
 - (void)showContacts

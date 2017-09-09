@@ -87,6 +87,7 @@
 
 // Send Eth View Controller
 - (void)didUpdateEthPayment:(NSDictionary *)ethPayment;
+- (void)promptEthTransferToNewAddress;
 
 // Receive View Controller
 - (void)clearReceiveAmounts;

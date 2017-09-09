@@ -231,6 +231,16 @@
     [_sendEtherViewController didUpdatePayment:ethPayment];
 }
 
+- (void)promptEthTransferToNewAddress
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:BC_STRING_YOUR_ETHER_ADDRESS message:BC_STRING_ETHER_TRANSFER_INFO preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:BC_STRING_NEXT style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    
+    [self.tabViewController presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)didFetchEthExchangeRate:(NSNumber *)rate
 {
     self.latestEthExchangeRate = [NSDecimalNumber decimalNumberWithDecimal:[rate decimalValue]];
