@@ -30,7 +30,7 @@
     
     self.ethButton.titleLabel.minimumScaleFactor = 0.75f;
     self.ethButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [self.ethButton setTitle:self.transaction.amount forState:UIControlStateNormal];
+    [self.ethButton setTitle:self.transaction.amountTruncated forState:UIControlStateNormal];
     
     if ([self.transaction.txType isEqualToString:TX_TYPE_TRANSFER]) {
         [self.ethButton setBackgroundColor:COLOR_TRANSACTION_TRANSFERRED];
