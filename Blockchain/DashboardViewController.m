@@ -6,6 +6,11 @@
 //  Copyright © 2017 Blockchain Luxembourg S.A. All rights reserved.
 //
 
+#define USER_DEFAULTS_KEY_GRAPH_TIME_FRAME @"graphTimeFrame"
+#define GRAPH_TIME_FRAME_WEEK @"1weeks"
+#define GRAPH_TIME_FRAME_MONTH @"4weeks"
+#define GRAPH_TIME_FRAME_YEAR @"52weeks"
+
 #import "DashboardViewController.h"
 #import "SessionManager.h"
 #import "BCPriceGraphView.h"
@@ -86,6 +91,24 @@
     [self setupAxes];
     
     [self setupTimeSpanButtons];
+    
+    NSString *timeFrame = [[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_KEY_GRAPH_TIME_FRAME];
+    
+    UIButton *selectedButton;
+    
+    [self.weekButton setSelected:NO];
+    [self.monthButton setSelected:NO];
+    [self.yearButton setSelected:NO];
+    
+    if (!timeFrame || [timeFrame isEqualToString:GRAPH_TIME_FRAME_WEEK]) {
+        selectedButton = self.weekButton;
+    } else if ([timeFrame isEqualToString:GRAPH_TIME_FRAME_MONTH]) {
+        selectedButton = self.monthButton;
+    } else if ([timeFrame isEqualToString:GRAPH_TIME_FRAME_YEAR]) {
+        selectedButton = self.yearButton;
+    }
+
+    [selectedButton setSelected:YES];
 }
 
 - (void)setAssetType:(AssetType)assetType
@@ -108,7 +131,9 @@
     
     [self reloadCards];
     
-    NSURL *URL = [NSURL URLWithString:[URL_SERVER stringByAppendingString:CHARTS_URL_SUFFIX]];
+    NSString *timeSpan = [[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_KEY_GRAPH_TIME_FRAME];
+    
+    NSURL *URL = [NSURL URLWithString:[URL_SERVER stringByAppendingString:[NSString stringWithFormat:CHARTS_URL_SUFFIX_ARGUMENT_TIME_SPAN, timeSpan]]];
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
     
     NSURLSessionDataTask *task = [[SessionManager sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -262,13 +287,19 @@
 
     [button setSelected:YES];
     
+    NSString *timeFrame;
+    
     if (button == self.weekButton) {
-        
+        timeFrame = GRAPH_TIME_FRAME_WEEK;
     } else if (button == self.monthButton) {
-        
+        timeFrame = GRAPH_TIME_FRAME_MONTH;
     } else if (button == self.yearButton) {
-        
+        timeFrame = GRAPH_TIME_FRAME_YEAR;
     }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:timeFrame forKey:USER_DEFAULTS_KEY_GRAPH_TIME_FRAME];
+    
+    [self reload];
 }
 
 - (void)updateEthExchangeRate:(NSDecimalNumber *)rate
