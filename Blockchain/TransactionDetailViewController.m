@@ -21,6 +21,7 @@
 #import "TransactionDetailNavigationController.h"
 #import "BCWebViewController.h"
 #import "TransactionRecipientsViewController.h"
+#import <SafariServices/SafariServices.h>
 
 #ifdef DEBUG
 #import "UITextView+AssertionFailureFix.h"
@@ -458,10 +459,16 @@ const CGFloat rowHeightValueReceived = 80;
 
 - (void)showWebviewDetail
 {
-    BCWebViewController *webViewController = [[BCWebViewController alloc] initWithTitle:BC_STRING_DETAILS];
-    [webViewController loadURL:[URL_SERVER stringByAppendingFormat:@"/tx/%@", self.transactionModel.myHash]];
-    webViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:webViewController animated:YES completion:nil];
+    NSURL *url = [NSURL URLWithString:self.transactionModel.detailButtonLink];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+        if (safariViewController) {
+            [self presentViewController:safariViewController animated:YES completion:nil];
+        } else {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
 }
 
 - (NSString *)getCurrencyCode

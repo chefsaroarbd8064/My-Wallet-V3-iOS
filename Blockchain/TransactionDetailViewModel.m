@@ -45,6 +45,8 @@
             self.reason = contactTransaction.reason;
         };
         self.contactName = transaction.contactName;
+        self.detailButtonTitle = [[NSString stringWithFormat:@"%@ %@",BC_STRING_VIEW_ON_URL_ARGUMENT, HOST_NAME_WALLET_SERVER] uppercaseString];
+        self.detailButtonLink = [URL_SERVER stringByAppendingFormat:@"/tx/%@", self.myHash];
     }
     return self;
 }
@@ -62,6 +64,8 @@
         self.note = nil;
         self.time = etherTransaction.time;
         self.dateString = [self getDate];
+        self.detailButtonTitle = [[NSString stringWithFormat:@"%@ %@",BC_STRING_VIEW_ON_URL_ARGUMENT, HOST_NAME_ETHERSCAN] uppercaseString];
+        self.detailButtonLink = [URL_ETHERSCAN stringByAppendingFormat:@"/tx/%@", self.myHash];
     }
     return self;
 }

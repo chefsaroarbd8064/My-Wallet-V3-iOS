@@ -8,8 +8,6 @@
 
 #import "TransactionDetailStatusCell.h"
 
-#define URL_BLOCKCHAIN_INFO @"blockchain.info"
-
 @implementation TransactionDetailStatusCell
 
 - (void)prepareForReuse
@@ -56,7 +54,7 @@
     self.bannerButton.backgroundColor = COLOR_BLOCKCHAIN_LIGHT_BLUE;
     self.bannerButton.titleLabel.font = [UIFont fontWithName:FONT_MONTSERRAT_REGULAR size:FONT_SIZE_MEDIUM_LARGE];
     self.bannerButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [self.bannerButton setTitle:[[NSString stringWithFormat:@"%@ %@",BC_STRING_VIEW_ON_URL_ARGUMENT, URL_BLOCKCHAIN_INFO] uppercaseString] forState:UIControlStateNormal];
+    [self.bannerButton setTitle:transactionModel.detailButtonTitle forState:UIControlStateNormal];
     self.bannerButton.layer.cornerRadius = 4;
     [self.bannerButton addTarget:self action:@selector(showWebviewDetail) forControlEvents:UIControlEventTouchUpInside];
     self.bannerButton.center = CGPointMake(self.contentView.center.x, self.bannerButton.center.y);

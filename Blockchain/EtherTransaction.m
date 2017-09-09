@@ -20,6 +20,7 @@
     transaction.to = [dict objectForKey:DICTIONARY_KEY_TO];
     transaction.time = [[dict objectForKey:DICTIONARY_KEY_TIME] longLongValue];
     transaction.txType = [dict objectForKey:DICTIONARY_KEY_TRANSACTION_TX_TYPE];
+    transaction.myHash = [dict objectForKey:DICTIONARY_KEY_HASH];
 
     return transaction;
 }
